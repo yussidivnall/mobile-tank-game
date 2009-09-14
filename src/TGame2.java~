@@ -1,0 +1,263 @@
+import javax.microedition.midlet.MIDlet;
+import javax.microedition.midlet.MIDletStateChangeException;
+import javax.microedition.lcdui.*;
+import javax.microedition.m3g.*;
+import javax.microedition.lcdui.CommandListener;
+import java.lang.IllegalArgumentException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.*;
+import javax.microedition.lcdui.Command;
+
+public class TGame2 extends MIDlet  implements CommandListener {
+
+	int FRAMES_PER_SECOND=20;
+	int TANK_MESH_ID = 0Xea0ef881;
+	int Speed;
+	private Display myDisplay = null;
+	Graphics3D myGraphics3D = Graphics3D.getInstance();
+	World myWorld = null;
+	
+	
+	//Tank's Ray Intersection (Collision Detection)
+	RayIntersection rayInterSection;
+	Object3D RayObject;
+
+	boolean currentCamera=false;
+	
+	TGameCanvas myCanvas = null;
+	
+
+	
+	TimerTask myTimerTask = null;
+	Timer myTimer = new Timer();
+	GameLogic myGameLogic;
+	// Game Object Collection Objects
+		Object3D myGameObjCollection[] = null;
+		Object3D myTankObj = null;
+		Group myTankGroup = null;
+		Light myLight = null;
+		Camera myCamera = null;
+		Camera myAttachedCamera = null;
+	//Scene Objects
+		Object3D mySceneObj[] = null;
+		Object3D myGroundObject = null;
+		Group 	myGroundGroup = null;
+	//Car Objects	
+		Object3D myCarObjects[] = null;
+		Object3D myCar1Object = null;
+		Group myCar1Group = null;
+	public TankControl myTankControl;
+
+	
+	
+	public TGame2(){
+		super();	
+		System.out.println("Constructor");
+
+	
+		myDisplay = Display.getDisplay(this);
+		myCanvas = new TGameCanvas(this);
+		try {
+			myWorld = new World();
+			myTankGroup = new Group();
+			myGroundGroup=new Group();
+			myCar1Group = new Group();
+			myGameObjCollection = Loader.load("/GameObjects.m3g"); 
+			mySceneObj = Loader.load("/compositeScene.m3g");
+			myCarObjects = Loader.load("/Car1.m3g");
+			
+			//Extracts Temp Groups from GameObject Collection 
+			Group tempGroup = (Group)myGameObjCollection[0];
+			Group tempSceneGroup = (Group)mySceneObj[0];
+			Group tempCarsGroup = (Group)myCarObjects[0];
+			
+			
+			System.out.println("My Game Objects"+myGameObjCollection[0]);
+			DisplayGroupsChildren(tempGroup);
+
+			
+			
+			//Extract objects from GameOject Collection
+			myLight = (Light)tempGroup.getChild(0);
+			myTankObj = tempGroup.getChild(2);			
+			myCamera = (Camera)tempGroup.getChild(1);
+			myAttachedCamera = (Camera)myCamera.duplicate();
+
+
+			//Extract Objects from Scene
+			System.out.println("My Scene Objects"+myGameObjCollection[0]);
+			DisplayGroupsChildren(tempSceneGroup);
+			myGroundObject = (Object3D)tempSceneGroup.getChild(0);
+			
+			//Extract Objects from Cars 
+			myCar1Object = (Object3D)tempCarsGroup.getChild(0);
+			
+			
+			System.out.println("My Camera"+myCamera);
+			System.out.println("My Light"+myLight);
+			System.out.println("My TankGroup"+myTankGroup);
+						
+			//Remove from temp Collection Objects
+			tempGroup.removeChild((Node)myCamera);
+			tempGroup.removeChild((Node)myLight);
+			tempGroup.removeChild((Node)myTankObj);
+			//Remove from Temp Scene Objects
+			tempSceneGroup.removeChild((Node)myGroundObject);
+			//Remove from Temp  Car Objects
+			tempCarsGroup.removeChild((Node)myCar1Object);
+			
+
+
+			myTankGroup.addChild((Node)myAttachedCamera);
+
+			myWorld=(World)tempGroup;
+
+
+			
+			
+			
+			//Add Game Objects
+			myTankGroup.addChild((Node)myTankObj);
+			myWorld.addChild((Node)myCamera);
+			myWorld.setActiveCamera(myCamera);
+			myWorld.addChild((Node)myLight);
+			myWorld.addChild(myTankGroup);
+			
+			//Add Scene Objects
+			myGroundGroup.addChild((Node)myGroundObject);
+			myWorld.addChild((Node)myGroundGroup);
+			myCamera.translate(0,0,-15);
+			myWorld.setActiveCamera(myCamera);	
+			//myWorld.setActiveCamera(myAttachedCamera);			
+			//Add Cars
+			myCar1Group.addChild((Node)myCar1Object);
+			myCar1Group.translate(0,0,-15);
+			myCar1Group.postRotate(45f,0,1,0);
+			myWorld.addChild(myCar1Group);
+			//[lmyCar1Group.addChild(myCar1Group);
+			
+			System.out.println("MyWorld's Children");
+			DisplayGroupsChildren(myWorld);
+			
+			
+			
+			myTankControl = new TankControl(myTankGroup);
+			myGameLogic = new GameLogic(myTankControl,myGroundGroup,myWorld);
+			myTimerTask = new TGameTimerTask(myGameLogic,myCanvas,1000/FRAMES_PER_SECOND);
+			
+			rayInterSection = new RayIntersection();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		System.out.println("Constructor End");
+	}
+
+	public void startApp(){
+		System.out.println("startApp");
+		myDisplay.setCurrent(myCanvas);
+		printSysData();
+		try {
+			myTimer.schedule(myTimerTask,0,1000/FRAMES_PER_SECOND);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}	
+		
+		//myCanvas.repaint();
+	
+		
+	
+	
+	
+		System.out.println("StartApp.myTankObj: "+myTankObj);
+		System.out.println("StartApp.myGroundObj: "+myGroundObject);
+		System.out.println("startApp.myTankGroup:  "+myTankGroup);
+		System.out.println("startApp.myTankGroup.ChildCount:  "+myTankGroup.getChildCount());
+		System.out.println("startApp end");
+	}
+	public void printSysData(){
+		System.out.println("SystemData....");
+		System.out.println(System.getProperty("javax.microedition.m3g.version"));
+		//Properties p = System.getProperties();
+		//p.list(System.out);
+	}
+	/* CommandListener abstract methods override
+	*/
+	public void commandAction(Command c,Displayable d){};
+	
+	public void SpeedUp(boolean forwards){
+		System.out.println("Speeeeeeeeeeeeeeeeeeeeeeeeeeeeeed");
+		myTankControl.moving=true;
+		myTankControl.Accelerating = true;
+		myTankControl.forwards=true;
+		System.out.println("Moving?:"+myTankControl.moving);
+	}
+
+	public void SlowDown(){
+		System.out.println("Slooooooooooooooooooooooooooooooooowwwwwwwwwwwwww");
+		myTankControl.Accelerating = false; //deselarating
+		//myTankControl.moving=false;
+		System.out.println("Moving?:"+myTankControl.moving);
+	}	
+	
+	public void Turn(boolean direction){
+		myTankControl.direction=direction;
+		myTankControl.turning=true;
+	}
+	public void Strighten(){
+		myTankControl.turning=false;
+	}
+	
+	public void Fire(){
+		System.out.println("Fire!");
+		myGameLogic.tankFire();
+	}
+	/*
+	/*Midlet abstract methods override
+	*/
+	public void destroyApp(boolean unconditional)throws MIDletStateChangeException{
+		myCanvas.terminate();
+		myTimerTask = null;
+		myTimer.cancel();
+		myTimer=null;
+	}
+	public void pauseApp(){
+	}
+	
+	//Midlet Paint Override
+	public void paint(Graphics g){
+		//System.out.println("paint");
+		//UpDatePositions();
+		g.setColor(0x00);
+		g.fillRect(0,0,myCanvas.getWidth(),myCanvas.getHeight());
+		
+		//System.out.println("paint -> ScreenCleaned");
+		int Validity = myWorld.animate(0);
+		//System.out.println("paint -> Animated, Validity: "+Validity);
+		myGraphics3D.bindTarget(g);
+		//System.out.println("paint -> Binded");
+		myGraphics3D.setViewport(0,0,myCanvas.getWidth(),myCanvas.getHeight());
+		//System.out.println("paint -> Viewport Seted");
+		myGraphics3D.render(myWorld);
+		//System.out.println("paint -> Rendered");
+		myGraphics3D.releaseTarget();
+		//System.out.println("paint end");
+	};
+
+	
+	
+	
+	public void DisplayGroupsChildren(Group group)
+	{
+		int NumberOfChildren = group.getChildCount();
+		for (int i = 0;i < NumberOfChildren;i++){
+			String ObjName = ""+group.getChild(i);
+			System.out.println("Child number: "+i+" is named: "+ObjName);
+		}
+	}
+}
+

@@ -1,0 +1,2 @@
+background=sunset.png
+ground=Ground1.m3g
