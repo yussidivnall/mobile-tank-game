@@ -62,17 +62,12 @@ public class LevelParser{
 		String truck_model_number="";		
 		String model_file="";		
 		
-		int i;		
-		for(i=0;s.charAt(i)!=',';i++){
-			truck_model_number+=s.charAt(i);
-		}
-		model_file=s.substring(++i).trim();
-		//System.out.println("TRUCK_MODEL: "+model_file.trim());
-		
-		//System.out.println("truck_model_number: "+Integer.parseInt(truck_model_number));		
+		truck_model_number=sub(s,',',0);		
+		model_file=sub(s,',',1);		
 		int num = (int)Integer.parseInt(truck_model_number);		
 		Group truck = loadModel(model_file);
 		if(truck==null)System.out.println("Should not of gotton NULL!!!! VERY BAD!!!!");
+				
 		myLevel.addTruckModel(num,truck);		
 	}
 	public void parse_levelGround(String s){
@@ -116,7 +111,6 @@ public class LevelParser{
 			if(currentArg==num && line.charAt(c)!=del)ret+=line.charAt(c);
 			if(currentArg>num)break;
 		}
-		System.out.println("returning"+ret);
 		return ret.trim();
 	}	
 	

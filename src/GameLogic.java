@@ -2,8 +2,7 @@ import javax.microedition.m3g.*;
 import javax.microedition.m3g.Group;
 public class GameLogic{
 	TankControl myTankControl;
-	World localWorld;
-        TCamera GameCamera;
+	TCamera GameCamera;
 	Group Ground;
 	float GroundPositions[];	
 	float GroundLimits[]={0,0,0,0};//[MAX_X,MIN_X,MAX_Z,MIN_Z]	
@@ -15,30 +14,18 @@ public class GameLogic{
 	
 	float DISTANCE_FROM_GROUND=0.05f;
 	float NORMALS_ACCURACY=0.5f;
-	
-        Level gameLoader;
+	Level myLevel;
         
 	int GroundIndices[];
-	public GameLogic(TankControl tankRef,Level tl,TCamera cam){
+	public GameLogic(TankControl tankRef,Level level,TCamera cam){
 		
-                gameLoader = tl;
-                System.out.println("GameLogic Construction");
-		Ground=gameLoader.groundGroup;
+		myLevel = level;
+		System.out.println("GameLogic Construction");
+		Ground=myLevel.groundGroup;
 		myTankControl = tankRef;
 		GroundObject  = (Object3D)Ground.getChild(0);
 		GameCamera = cam;
-                //Ground.getPositions(GroundPositions);
-		//Search for board(Ground)limits				
-
-		
-			
-				
-		
-		//GroundIndices = new int[GroundObject.getIndexCount()];
-		//GroundIndexBuffer = new IndexBuffer();
-		//GroundIndexBuffer = (IndexBuffer)GroundObject.VertexBuffer;
-		//GroundIndexBuffer = (IndexBuffer)GroundObject.VertexArray;
-		localWorld = gameLoader.myWorld;
+      
 		
 		
 		Mesh m = (Mesh)GroundObject;
@@ -75,7 +62,7 @@ public class GameLogic{
 			orientation[2]=tankOrientation[2];
 			
 			RayIntersection rayIntersection=new RayIntersection();
-			if(localWorld.pick(-1,position[0],position[1],position[2],orientation[0],orientation[1],orientation[2],rayIntersection)){//Check if to Lower
+			if(myLevel.myWorld.pick(-1,position[0],position[1],position[2],orientation[0],orientation[1],orientation[2],rayIntersection)){//Check if to Lower
 				if( rayIntersection.getDistance()>=DISTANCE_FROM_GROUND){
 					System.out.println("down Distance : "+rayIntersection.getDistance());
 					myTankControl.tankAltitute(rayIntersection.getDistance());	
@@ -84,7 +71,7 @@ public class GameLogic{
 				if((rayIntersection.getNormalX()<tankOrientation[0]+NORMALS_ACCURACY &rayIntersection.getNormalX()>tankOrientation[0]-NORMALS_ACCURACY) |(rayIntersection.getNormalZ()<tankOrientation[2]+NORMALS_ACCURACY &rayIntersection.getNormalZ()>tankOrientation[2]-NORMALS_ACCURACY)){
 					//myTankControl.tankGroundAlignment(rayIntersection.getNormalX(),0,rayIntersection.getNormalZ());
 				}
-			}else if(localWorld.pick(-1,position[0],position[1],position[2],orientation[0],-orientation[1],orientation[2],rayIntersection) ){//Check if to higher
+			}else if(myLevel.myWorld.pick(-1,position[0],position[1],position[2],orientation[0],-orientation[1],orientation[2],rayIntersection) ){//Check if to higher
 				if(rayIntersection.getDistance()>=DISTANCE_FROM_GROUND){
 					System.out.println("Up Distance : "+rayIntersection.getDistance());
 					myTankControl.tankAltitute(-(rayIntersection.getDistance()));	
@@ -135,20 +122,19 @@ public class GameLogic{
 		float position[] = myTankControl.getTurrotPosition();
 		float orientation[] = myTankControl.getTurrotOrientation();
 		RayIntersection rayIntersection=new RayIntersection();
-		//if(localWorld.pick(-1,position[0],position[1],position[2],orientation[0],orientation[1],orientation[2],rayIntersection)){
-		if(gameLoader.myWorld.pick(-1,position[0],position[1],position[2],orientation[0],orientation[1],orientation[2],rayIntersection)){
+		if(myLevel.myWorld.pick(-1,position[0],position[1],position[2],orientation[0],orientation[1],orientation[2],rayIntersection)){
 			//somthing was hit
                         System.out.println("Picked something");
 			Node objectIntersected = rayIntersection.getIntersected();
                         
                         //Do the explosion sprite
                         Group explosionGroup = new Group();
-                        Sprite3D explosion = (Sprite3D)gameLoader.explosionSprite.duplicate();
+                        Sprite3D explosion = (Sprite3D)myLevel.explosionSprite.duplicate();
 								//explosion.setCrop(0,0,100,100);                                                
                         
                         
                         explosionGroup.addChild(explosion);
-                        gameLoader.myWorld.addChild(explosionGroup);
+                        myLevel.myWorld.addChild(explosionGroup);
                         float trans[] = new float[3];
                         myTankControl.getTankGroup().getTranslation(trans);
                         explosionGroup.setTranslation(trans[0], trans[1]+2, trans[2]);
@@ -157,7 +143,7 @@ public class GameLogic{
                         explosionGroup.preRotate(orient[0], orient[1], orient[2], orient[3]);
                         explosion.translate(0, 0, rayIntersection.getDistance()*10-2); // No idea why you need*10-1
 								
-								TGameExplosionThread animThread = new TGameExplosionThread(explosion,explosionGroup,gameLoader.myWorld);
+								TGameExplosionThread animThread = new TGameExplosionThread(explosion,explosionGroup,myLevel.myWorld);
 								animThread.start();	                        
                         //if it wasn't the ground that was hit, then the game engine needs to know
                         if(!objectIntersected.equals(GroundObject)){           
