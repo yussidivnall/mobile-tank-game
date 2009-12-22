@@ -1,6 +1,7 @@
 import javax.microedition.m3g.*;
 import java.io.*;
 import java.util.Hashtable;
+import java.util.*;
 import javax.microedition.lcdui.*;
 public class Level{
 	final static int _RULE_STOP_THAT_TRUCK=1;
@@ -55,7 +56,7 @@ public class Level{
 		LevelParser parser = new LevelParser(level,this);
 		myWorld.addChild(groundGroup);
 		myWorld.setBackground(myBackground);
-
+		loadSources();
 		
 		/*	VERY TEMPORARY!!!!!
 		*/		
@@ -74,7 +75,18 @@ public class Level{
             explosionSprite.setTranslation(0, 0, 0);
 		
 		}catch(Exception e){e.printStackTrace();}            
-
+	}
+	
+	public void loadSources(){
+			System.out.println("Number of sources:"+sources.size());
+			for(Enumeration e=sources.elements();e.hasMoreElements();){
+				TBuilding build=(TBuilding)e.nextElement();
+				putBuilding(build);			
+			}
+	}
+	public void putBuilding(TBuilding build){
+		myWorld.addChild(build.group);
+		build.group.setTranslation(build.translation.X,build.translation.Y,build.translation.Z);
 	}
 
 	public void setGround(Group g){

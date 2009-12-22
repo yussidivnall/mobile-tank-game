@@ -101,7 +101,7 @@ public class LevelParser{
 		TPoint translation=new TPoint(Integer.parseInt(tx),Integer.parseInt(ty),Integer.parseInt(tz));
 		TPoint rotation=new TPoint(Integer.parseInt(rx),Integer.parseInt(ry),Integer.parseInt(rz));
 		Group group=loadModel(source_file);
-		TBuilding building = new TBuilding(group,translation,rotation);
+		TBuilding building = new TBuilding((Group)group.duplicate(),translation,rotation);
 		myLevel.addSource(Integer.parseInt(source_num),building);
 	}
 	
