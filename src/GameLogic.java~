@@ -3,6 +3,7 @@ import javax.microedition.m3g.Group;
 public class GameLogic{
 	TankControl myTankControl;
 	World localWorld;
+        TCamera GameCamera;
 	Group Ground;
 	float GroundPositions[];	
 	float GroundLimits[]={0,0,0,0};//[MAX_X,MIN_X,MAX_Z,MIN_Z]	
@@ -15,13 +16,18 @@ public class GameLogic{
 	float DISTANCE_FROM_GROUND=0.05f;
 	float NORMALS_ACCURACY=0.5f;
 	
+        TLoader gameLoader;
+        
 	int GroundIndices[];
-	public GameLogic(TankControl tankRef,Group ground,World world){
-		System.out.println("GameLogic Construction");
-		Ground=ground;
+	public GameLogic(TankControl tankRef,TLoader tl,TCamera cam){
+		
+                gameLoader = tl;
+                System.out.println("GameLogic Construction");
+		Ground=gameLoader.groundGroup;
 		myTankControl = tankRef;
 		GroundObject  = (Object3D)Ground.getChild(0);
-		//Ground.getPositions(GroundPositions);
+		GameCamera = cam;
+                //Ground.getPositions(GroundPositions);
 		//Search for board(Ground)limits				
 
 		
@@ -32,7 +38,7 @@ public class GameLogic{
 		//GroundIndexBuffer = new IndexBuffer();
 		//GroundIndexBuffer = (IndexBuffer)GroundObject.VertexBuffer;
 		//GroundIndexBuffer = (IndexBuffer)GroundObject.VertexArray;
-		localWorld = world;
+		localWorld = gameLoader.myWorld;
 		
 		
 		Mesh m = (Mesh)GroundObject;
@@ -50,19 +56,11 @@ public class GameLogic{
 		System.out.println("Scale Bias[3] : "+ScaleBias[3]);
 
 		GroundPositions = new float[GroundVertexBuffer.getVertexCount()];		
-		GroundLimits[0] = 50;		
-		GroundLimits[1] = -50;
-		GroundLimits[2] = 50;
-		GroundLimits[3] = -50;		
+		GroundLimits[0] = 200;		
+		GroundLimits[1] = -200;
+		GroundLimits[2] = 200;
+		GroundLimits[3] = -200;		
 		
-		for(int i=0;i<	GroundPositions.length;i+=3){// Find MAX_MIN_X
-				if(GroundPositions[i] > GroundLimits[0])GroundLimits[0]=GroundPositions[i]; 
-				if(GroundPositions[i] < GroundLimits[1])GroundLimits[1]=GroundPositions[i];		
-		}
-		for(int i =2;i<GroundPositions.length;i+=3){// Find MAX_MIN_Z
-				if(GroundPositions[i] > GroundLimits[2])GroundLimits[2]=GroundPositions[i];
-				if(GroundPositions[i] < GroundLimits[3])GroundLimits[3]=GroundPositions[i];						
-		}
 		System.out.println("MAX_X:"+GroundLimits[0]+";MIN_X:"+GroundLimits[1]+";MAX_Z"+GroundLimits[2]+";MIN_Z"+GroundLimits[3]);
 
 		byte buffer[] ;
@@ -138,13 +136,33 @@ public class GameLogic{
 		float orientation[] = myTankControl.getTurrotOrientation();
 		RayIntersection rayIntersection=new RayIntersection();
 		if(localWorld.pick(-1,position[0],position[1],position[2],orientation[0],orientation[1],orientation[2],rayIntersection)){
-			System.out.println("Picked something");
+			//somthing was hit
+                        System.out.println("Picked something");
 			Node objectIntersected = rayIntersection.getIntersected();
-				//somthing was hit 
-				if(!objectIntersected.equals(GroundObject))objectIntersected.postRotate(45,0,1,0);
-								
-				System.out.println("Picked : " + objectIntersected);
-				System.out.println("Distance : "+rayIntersection.getDistance());
+                        
+                        //Do the explosion sprite
+                        Group explosionGroup = new Group();
+                        Sprite3D explosion = (Sprite3D)gameLoader.explosionSprite.duplicate();
+								//explosion.setCrop(0,0,100,100);                                                
+                        
+                        
+                        explosionGroup.addChild(explosion);
+                        gameLoader.myWorld.addChild(explosionGroup);
+                        float trans[] = new float[3];
+                        myTankControl.getTankGroup().getTranslation(trans);
+                        explosionGroup.setTranslation(trans[0], trans[1]+2, trans[2]);
+                        float orient[] = new float[4];
+                        myTankControl.getTankGroup().getOrientation(orient);
+                        explosionGroup.preRotate(orient[0], orient[1], orient[2], orient[3]);
+                        explosion.translate(0, 0, rayIntersection.getDistance()*10-1); // No idea why you need*10-1
+								TGameExplosionThread animThread = new TGameExplosionThread(explosion);
+								animThread.start();	                        
+                        //if it wasn't the ground that was hit, then the game engine needs to know
+                        if(!objectIntersected.equals(GroundObject)){           
+                                    //objectIntersected.postRotate(45,0,1,0);
+                        }					
+			System.out.println("Picked : " + objectIntersected);
+			System.out.println("Distance : "+rayIntersection.getDistance());
 			
 		}else{
 			System.out.println("Nothing Picked");
@@ -157,16 +175,31 @@ public class GameLogic{
 		
 	}
 	
+        public void cameraControl(){
+            if(myTankControl.Accelerating){
+                GameCamera.accelerate(myTankControl.Speed);
+            }else{
+                GameCamera.decelerate(myTankControl.Speed);
+            }
+            
+            
+        }
+        
+        
 	public void advanceLogic(float time){
 		tankLogic(time);
+                
 		if (myTankControl.moving){// needs to update the positioning
 			GroundBorders();			
-			GroundInteraction();		
+			GroundInteraction();
+                        cameraControl();
 		}
 	}
 	
 
 	
+        
+        
 	public void tankLogic(float time){
 		if (myTankControl.Speed > myTankControl.MAX_SPEED){ //MAX SPEED
 			myTankControl.Speed=myTankControl.MAX_SPEED;

@@ -143,6 +143,9 @@ public class GameLogic{
                         //Do the explosion sprite
                         Group explosionGroup = new Group();
                         Sprite3D explosion = (Sprite3D)gameLoader.explosionSprite.duplicate();
+								//explosion.setCrop(0,0,100,100);                                                
+                        
+                        
                         explosionGroup.addChild(explosion);
                         gameLoader.myWorld.addChild(explosionGroup);
                         float trans[] = new float[3];
@@ -152,6 +155,9 @@ public class GameLogic{
                         myTankControl.getTankGroup().getOrientation(orient);
                         explosionGroup.preRotate(orient[0], orient[1], orient[2], orient[3]);
                         explosion.translate(0, 0, rayIntersection.getDistance()*10-1); // No idea why you need*10-1
+								
+								TGameExplosionThread animThread = new TGameExplosionThread(explosion,explosionGroup,gameLoader.myWorld);
+								animThread.start();	                        
                         //if it wasn't the ground that was hit, then the game engine needs to know
                         if(!objectIntersected.equals(GroundObject)){           
                                     //objectIntersected.postRotate(45,0,1,0);

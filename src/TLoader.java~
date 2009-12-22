@@ -83,7 +83,7 @@ public class TLoader {
 				cm.setBlending(CompositingMode.ALPHA);      
             
             Appearance app = new Appearance();
-            //app.setLayer(9);
+            app.setLayer(9);
             app.setCompositingMode(cm);
             
             explosionSprite = new Sprite3D(true,explosionImg2D,app);
