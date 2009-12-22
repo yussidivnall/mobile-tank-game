@@ -46,6 +46,7 @@ public class TLoader {
             trackGroup = new Group();
             
             //Load once
+            /*
             Object3D gameObjs[] = Loader.load(GAME_OBJECTS);
             Group tempGameObjGrp = (Group)gameObjs[0];
             Light light = (Light)tempGameObjGrp.getChild(0);
@@ -61,7 +62,7 @@ public class TLoader {
             myWorld.addChild((Node)light);
             myWorld.setActiveCamera(camera);
             myWorld.addChild((Node)playersGroup);
-            
+            */
             
             //Ground
             
@@ -107,15 +108,6 @@ public class TLoader {
             myWorld.addChild(grp);
 
 				//Track
-				Group trk = new Group();
-				Object3D trkObjs[] = Loader.load(TRACK);
-				Group trkTmpGrp = (Group)trkObjs[0];
-				Object3D trkObj = (Object3D)trkTmpGrp.getChild(0);
-				trkTmpGrp.removeChild((Node)trkObj);
-				trk.addChild((Node)trkObj);
-				//...
-				myWorld.addChild(trk);
-				/*
 				Object trackObjs[] = Loader.load(TRACK);            
             Group tempTrackGroup = (Group)trackObjs[0];
 				trackObject = (Object3D)tempTrackGroup.getChild(0);
@@ -124,7 +116,7 @@ public class TLoader {
 				trackGroup.addChild((Node)trackObject);
 				trackGroup.translate(0,0.1f,10);
 				myWorld.addChild(trackGroup);            
-				*/
+				
 
 
             

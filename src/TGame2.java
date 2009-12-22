@@ -34,7 +34,7 @@ public class TGame2 extends MIDlet  implements CommandListener {
 	Timer myTimer = new Timer();
 	GameLogic myGameLogic;
 	public TankControl myTankControl;
-
+	public Level myLevel;
 	
 	
 	public TGame2(){
@@ -46,10 +46,13 @@ public class TGame2 extends MIDlet  implements CommandListener {
 		myCanvas = new TGameCanvas(this);
 		try {
                     
-                        myWorld = new World();
-			gameLoader = new TLoader(myWorld);
+         myWorld = new World();
+			myLevel = new Level(myWorld);         
+			myLevel.load("level.txt");         
+         
+			gameLoader = new TLoader(myWorld); // Get rid of this and replace with myLevel!
 			myTankControl = new TankControl(gameLoader.playersGroup);
-                        TCamera GameCamera = new TCamera(gameLoader.camera,myTankControl,FRAMES_PER_SECOND);
+         TCamera GameCamera = new TCamera(gameLoader.camera,myTankControl,FRAMES_PER_SECOND);
                         
                         myGameLogic = new GameLogic(myTankControl,gameLoader,GameCamera);
 			//myGameLogic = new GameLogic(myTankControl,gameLoader.groundGroup,gameLoader.myWorld,GameCamera);

@@ -1,0 +1,9 @@
+import javax.microedition.m3g.*;
+public class TBuilding{
+	Group group;
+	TPoint Translation;
+	TPoint Rotation;
+	TBuilding(Group g,TPoint t,TPoint r){
+			
+	}
+}

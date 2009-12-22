@@ -155,7 +155,7 @@ public class GameLogic{
                         float orient[] = new float[4];
                         myTankControl.getTankGroup().getOrientation(orient);
                         explosionGroup.preRotate(orient[0], orient[1], orient[2], orient[3]);
-                        explosion.translate(0, 0, rayIntersection.getDistance()*10-1); // No idea why you need*10-1
+                        explosion.translate(0, 0, rayIntersection.getDistance()*10-2); // No idea why you need*10-1
 								
 								TGameExplosionThread animThread = new TGameExplosionThread(explosion,explosionGroup,gameLoader.myWorld);
 								animThread.start();	                        

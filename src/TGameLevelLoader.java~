@@ -1,0 +1,15 @@
+import javax.microedition.m3g.*;
+public class TGameLevelLoader{
+	public final String GAME_OBJECTS ="/GameObjects.m3g"; // Player's model(Tank) really should be somewhere else 	
+	World myWorld;
+	
+	
+	TGameLevelLoader(World world,TLoader loader,String level_file){
+		myWorld = world;
+		init_world();
+	}
+	private void init_world(){
+		Object3D gameObjs[] = Loader.load(GAME_OBJECTS);
+	}
+
+}

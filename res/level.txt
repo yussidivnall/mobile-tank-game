@@ -1,10 +1,11 @@
 level_name:Level1
 level_intro:Intro1
-level_rules:Stop_that_track
+level_rules:Stop_that_truck
 level_number_of_sources:1
 level_number_of_destinations:1
-level_tracks_per_minute:3
-level_source_model:0,/PetrolStation4.m3g,(0,0,-10),(0,0,0)
+level_trucks_per_minute:3
+level_source_model:0,/PetrolStation4.m3g,10:0:-10,-1:0:0
 level_destination_model:0,/PetrolStation4.m3g,(0,0,0),(0,0,0)
-level_track_model:0,/track1.m3g
-level_ground:/Farm2.m3g,/sunset.png
+level_truck_model:0,/track1.m3g
+level_ground:/Farm2.m3g
+level_background:/sunset.png
