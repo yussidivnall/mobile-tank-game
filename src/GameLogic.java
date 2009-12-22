@@ -16,10 +16,10 @@ public class GameLogic{
 	float DISTANCE_FROM_GROUND=0.05f;
 	float NORMALS_ACCURACY=0.5f;
 	
-        TLoader gameLoader;
+        Level gameLoader;
         
 	int GroundIndices[];
-	public GameLogic(TankControl tankRef,TLoader tl,TCamera cam){
+	public GameLogic(TankControl tankRef,Level tl,TCamera cam){
 		
                 gameLoader = tl;
                 System.out.println("GameLogic Construction");

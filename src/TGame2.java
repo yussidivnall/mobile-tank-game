@@ -21,7 +21,7 @@ public class TGame2 extends MIDlet  implements CommandListener {
 	private Display myDisplay = null;
 	Graphics3D myGraphics3D = Graphics3D.getInstance();
 	World myWorld = null;
-	TLoader gameLoader;
+	//TLoader gameLoader;
 	
 	//Tank's Ray Intersection (Collision Detection)
 	RayIntersection rayInterSection;
@@ -50,11 +50,11 @@ public class TGame2 extends MIDlet  implements CommandListener {
 			myLevel = new Level(myWorld);         
 			myLevel.load("level.txt");         
          
-			gameLoader = new TLoader(myWorld); // Get rid of this and replace with myLevel!
-			myTankControl = new TankControl(gameLoader.playersGroup);
-         TCamera GameCamera = new TCamera(gameLoader.camera,myTankControl,FRAMES_PER_SECOND);
+			//gameLoader = new TLoader(myWorld); // Get rid of this and replace with myLevel!
+			myTankControl = new TankControl(myLevel.playersGroup);
+         TCamera GameCamera = new TCamera(myLevel.camera,myTankControl,FRAMES_PER_SECOND);
                         
-                        myGameLogic = new GameLogic(myTankControl,gameLoader,GameCamera);
+                        myGameLogic = new GameLogic(myTankControl,myLevel,GameCamera);
 			//myGameLogic = new GameLogic(myTankControl,gameLoader.groundGroup,gameLoader.myWorld,GameCamera);
 			myTimerTask = new TGameTimerTask(myGameLogic,myCanvas,1000/FRAMES_PER_SECOND);
 			rayInterSection = new RayIntersection();
@@ -129,10 +129,10 @@ public class TGame2 extends MIDlet  implements CommandListener {
                 
 		g.setColor(0x00);
 		g.fillRect(0,0,myCanvas.getWidth(),myCanvas.getHeight());
-		int Validity = gameLoader.myWorld.animate((int)time);
+		int Validity = myLevel.myWorld.animate((int)time);
 		myGraphics3D.bindTarget(g);
 		myGraphics3D.setViewport(0,0,myCanvas.getWidth(),myCanvas.getHeight());
-		myGraphics3D.render(gameLoader.myWorld);
+		myGraphics3D.render(myLevel.myWorld);
 		myGraphics3D.releaseTarget();
                 elapsed = System.currentTimeMillis()-start;
                 time += (int)elapsed;

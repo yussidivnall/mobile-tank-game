@@ -102,7 +102,7 @@ public class LevelParser{
 		TPoint rotation=new TPoint(Integer.parseInt(rx),Integer.parseInt(ry),Integer.parseInt(rz));
 		Group group=loadModel(source_file);
 		TBuilding building = new TBuilding(group,translation,rotation);
-		myLevel.addSource(Integer.parseInt(source_num,building));
+		myLevel.addSource(Integer.parseInt(source_num),building);
 	}
 	
 	
@@ -113,7 +113,7 @@ public class LevelParser{
 		String ret="";
 		for(int c=0;c<line.length();c++){
 			if(line.charAt(c)==del)currentArg++;
-			if(currentArg==num)ret+=line.charAt(c);
+			if(currentArg==num && line.charAt(c)!=del)ret+=line.charAt(c);
 			if(currentArg>num)break;
 		}
 		System.out.println("returning"+ret);

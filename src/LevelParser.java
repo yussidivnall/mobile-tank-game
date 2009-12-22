@@ -113,7 +113,7 @@ public class LevelParser{
 		String ret="";
 		for(int c=0;c<line.length();c++){
 			if(line.charAt(c)==del)currentArg++;
-			if(currentArg==num)ret+=line.charAt(c);
+			if(currentArg==num && line.charAt(c)!=del)ret+=line.charAt(c);
 			if(currentArg>num)break;
 		}
 		System.out.println("returning"+ret);

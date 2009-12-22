@@ -1,7 +1,7 @@
 import javax.microedition.m3g.*;
 import java.io.*;
 import java.util.Hashtable;
-
+import javax.microedition.lcdui.*;
 public class Level{
 	final static int _RULE_STOP_THAT_TRUCK=1;
 
@@ -16,6 +16,7 @@ public class Level{
 	Camera camera;	
 	Group playersGroup;
 	Object3D playersObject;
+	Sprite3D explosionSprite;
 	
 	Group groundGroup;
 	Hashtable trucks;	
@@ -50,7 +51,30 @@ public class Level{
 	}
 	//Do all the parsing from here, maybe needs to be in a different class for the sake of cleanliness
 	public void load(String level){
+		try{		
 		LevelParser parser = new LevelParser(level,this);
+		myWorld.addChild(groundGroup);
+		myWorld.setBackground(myBackground);
+
+		
+		/*	VERY TEMPORARY!!!!!
+		*/		
+				//Explosion
+		      Image explosionImg = Image.createImage("/explosion1.gif");
+            Image2D explosionImg2D = new Image2D(Image2D.RGBA,explosionImg);
+	
+	   		CompositingMode cm = new CompositingMode();
+				cm.setBlending(CompositingMode.ALPHA);      
+            
+            Appearance app = new Appearance();
+            //app.setLayer(9);
+            app.setCompositingMode(cm);
+            
+            explosionSprite = new Sprite3D(true,explosionImg2D,app);
+            explosionSprite.setTranslation(0, 0, 0);
+		
+		}catch(Exception e){e.printStackTrace();}            
+
 	}
 
 	public void setGround(Group g){
