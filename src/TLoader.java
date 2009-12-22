@@ -20,6 +20,10 @@ public class TLoader {
     Group groundGroup;
     Object3D groundObject;
     
+    Group trackGroup;
+    Object3D trackObject;
+	
+    
     Sprite3D explosionSprite;
     
     Camera camera;
@@ -31,15 +35,15 @@ public class TLoader {
         try{
             String BACKGROUND = "/sunset.png";
             String GROUND     = "/Farm2.m3g";
-            String GAME_OBJECTS ="/GameObjects.m3g"; // Player's model really should be somewhere else
+            String GAME_OBJECTS ="/GameObjects.m3g"; // Player's model(Tank) really should be somewhere else
             String EXPLOSION ="/explosion1.gif";
-            
+            String TRACK="/track1.m3g";
             
             //World
             myWorld = w;
             playersGroup = new Group();
             groundGroup = new Group();
-            
+            trackGroup = new Group();
             
             //Load once
             Object3D gameObjs[] = Loader.load(GAME_OBJECTS);
@@ -57,6 +61,7 @@ public class TLoader {
             myWorld.addChild((Node)light);
             myWorld.setActiveCamera(camera);
             myWorld.addChild((Node)playersGroup);
+            
             
             //Ground
             
@@ -100,6 +105,19 @@ public class TLoader {
             TGameObject tgobj = new TGameObject(0,0,0,100);
             levelObjects.put(grp, tgobj);
             myWorld.addChild(grp);
+
+				//Track
+				Object trackObjs[] = Loader.load(TRACK);            
+            Group tempTrackGroup = (Group)trackObjs[0];
+				trackObject = (Object3D)tempTrackGroup.getChild(0);
+				
+				tempTrackGroup.removeChild((Node)trackObject);
+				trackGroup.addChild((Node)trackObject);
+				trackGroup.translate(0,0.1f,10);
+				myWorld.addChild(trackGroup);            
+				
+
+
             
         }catch(Exception e){
             e.printStackTrace();

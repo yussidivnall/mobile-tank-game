@@ -135,7 +135,8 @@ public class GameLogic{
 		float position[] = myTankControl.getTurrotPosition();
 		float orientation[] = myTankControl.getTurrotOrientation();
 		RayIntersection rayIntersection=new RayIntersection();
-		if(localWorld.pick(-1,position[0],position[1],position[2],orientation[0],orientation[1],orientation[2],rayIntersection)){
+		//if(localWorld.pick(-1,position[0],position[1],position[2],orientation[0],orientation[1],orientation[2],rayIntersection)){
+		if(gameLoader.myWorld.pick(-1,position[0],position[1],position[2],orientation[0],orientation[1],orientation[2],rayIntersection)){
 			//somthing was hit
                         System.out.println("Picked something");
 			Node objectIntersected = rayIntersection.getIntersected();
@@ -155,7 +156,8 @@ public class GameLogic{
                         myTankControl.getTankGroup().getOrientation(orient);
                         explosionGroup.preRotate(orient[0], orient[1], orient[2], orient[3]);
                         explosion.translate(0, 0, rayIntersection.getDistance()*10-1); // No idea why you need*10-1
-								TGameExplosionThread animThread = new TGameExplosionThread(explosion);
+								
+								TGameExplosionThread animThread = new TGameExplosionThread(explosion,explosionGroup,gameLoader.myWorld);
 								animThread.start();	                        
                         //if it wasn't the ground that was hit, then the game engine needs to know
                         if(!objectIntersected.equals(GroundObject)){           
