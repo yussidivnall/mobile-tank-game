@@ -45,6 +45,7 @@ public class LevelParser{
 			if(arg.startsWith(GROUND)) parse_levelGround(arg.substring(GROUND.length()));
 			if(arg.startsWith(BACKGROUND)) parse_levelBackground(arg.substring(BACKGROUND.length()));
 			if(arg.startsWith(SOURCE_MODEL)) parse_sourceModel(arg.substring(SOURCE_MODEL.length()));
+			if(arg.startsWith(DESTINATION_MODEL)) parse_destinationModel(arg.substring(DESTINATION_MODEL.length()));
 		}catch(IOException e){
 			e.printStackTrace();		
 		}
@@ -80,25 +81,34 @@ public class LevelParser{
 		myLevel.setBackground(bg);	
 	}
 	public void parse_sourceModel(String s){
-		String source_num="";
-		String source_file="";
+		int src_num = Integer.parseInt(sub(s,',',0));
+		TBuilding src_building=getBuilding(s);	
+		myLevel.addSource(Integer.parseInt(source_num),building);
+	}
+	public void parse_destinationModel(String s){
+		int dest_num = Integer.parseInt(sub(s,',',0));
+		TBuilding dest_building=getBuilding(s);
+		myLevel.addDestination(dest_num,dest_building);
+	}
+	public TBuilding getBuilding(String s){
+		//Gets the arguments for source/destination and returns a TBuilding
+		String building_file="";
 		String trans="";
 		String rot="";	
 		String tx,ty,tz ="";
 		String rx,ry,rz ="";		
-		System.out.println("SourceMODEL ARG:"+s);
-		source_num=sub(s,',',0);
-		source_file=sub(s,',',1);
+		building_file=sub(s,',',1);
 		trans=sub(s,',',2);
 		rot=sub(s,',',3);
 		tx=sub(trans,':',0);	ty=sub(trans,':',1);tz=sub(trans,':',2);
 		rx=sub(rot,':',0);ry=sub(rot,':',1);rz=sub(rot,':',2);
 		TPoint translation=new TPoint(Integer.parseInt(tx),Integer.parseInt(ty),Integer.parseInt(tz));
 		TPoint rotation=new TPoint(Integer.parseInt(rx),Integer.parseInt(ry),Integer.parseInt(rz));
-		Group group=loadModel(source_file);
+		Group group=loadModel(building_file);
 		TBuilding building = new TBuilding((Group)group.duplicate(),translation,rotation);
-		myLevel.addSource(Integer.parseInt(source_num),building);
+		return building;
 	}
+	
 	
 	
 	public String sub(String l,char d,int n){
@@ -111,7 +121,6 @@ public class LevelParser{
 			if(currentArg==num && line.charAt(c)!=del)ret+=line.charAt(c);
 			if(currentArg>num)break;
 		}
-		System.out.println("returning"+ret);
 		return ret.trim();
 	}	
 	
