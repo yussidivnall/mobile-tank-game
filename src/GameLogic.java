@@ -148,6 +148,7 @@ public class GameLogic{
                         //if it wasn't the ground that was hit, then the game engine needs to know
                         if(!objectIntersected.equals(GroundObject)){           
                                     //objectIntersected.postRotate(45,0,1,0);
+                                    myLevel.SomethingShot(objectIntersected);
                         }					
 			System.out.println("Picked : " + objectIntersected);
 			System.out.println("Distance : "+rayIntersection.getDistance());
@@ -180,7 +181,7 @@ public class GameLogic{
 		if (myTankControl.moving){// needs to update the positioning
 			GroundBorders();			
 			GroundInteraction();
-                        cameraControl();
+         cameraControl();
 		}
 	}
 	

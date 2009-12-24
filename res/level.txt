@@ -9,3 +9,7 @@ level_destination_model:0,/PetrolStation4.m3g,10:0:50,0:0:0
 level_truck_model:0,/track1.m3g
 level_ground:/Farm2.m3g
 level_background:/sunset.png
+level_idle_sprite3d:0,/tree.gif,-15:1:0,10:10:10
+level_idle_sprite3d:1,/tree.gif,-10:1:0,10:10:10
+level_ai:/ai_1.txt
+

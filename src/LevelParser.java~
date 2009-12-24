@@ -14,6 +14,9 @@ public class LevelParser{
 	final String TRUCK_MODEL = "level_truck_model:";
 	final String GROUND = "level_ground:";
 	final String BACKGROUND  = "level_background:";
+	final String IDLE_SPRITE3D = "level_idle_sprite3d:";
+	final String LEVEL_AI = "level_ai:";	
+	
 	Hashtable models; // To check against before loading a model twice!
 	
 	Level myLevel;
@@ -39,6 +42,7 @@ public class LevelParser{
 	public void parse(String arg){
 		//System.out.println("Parsing:"+arg);
 		try{
+			//if(arg.startsWith(TAG)) parse_tagFunction(arg.substring(TAG.length()));
 			if(arg.startsWith(LEVEL_NAME)) parse_levelName(arg.substring(LEVEL_NAME.length()));
 			if(arg.startsWith(LEVEL_RULES)) parse_levelRules(arg.substring(LEVEL_RULES.length()));	
 			if(arg.startsWith(TRUCK_MODEL)) parse_levelTruckModel(arg.substring(TRUCK_MODEL.length()));
@@ -46,12 +50,20 @@ public class LevelParser{
 			if(arg.startsWith(BACKGROUND)) parse_levelBackground(arg.substring(BACKGROUND.length()));
 			if(arg.startsWith(SOURCE_MODEL)) parse_sourceModel(arg.substring(SOURCE_MODEL.length()));
 			if(arg.startsWith(DESTINATION_MODEL)) parse_destinationModel(arg.substring(DESTINATION_MODEL.length()));
+			if(arg.startsWith(IDLE_SPRITE3D)) parse_idleSprite3D(arg.substring(IDLE_SPRITE3D.length()));
+			if(arg.startsWith(LEVEL_AI)) parse_AI(arg.substring(LEVEL_AI.length()));
+			//IDLE_SPRITE3D LEVEL_AI
 		}catch(IOException e){
 			e.printStackTrace();		
 		}
 	}	
+	public void parse_AI(String s){
+		myLevel.myAI.load(s);	
+	}	
+	
 	public void parse_levelName(String s){
 		myLevel.Level_Name = s;
+
 	}
 	
 	public void parse_levelRules(String s){
@@ -59,6 +71,20 @@ public class LevelParser{
 			myLevel.rule_set = Level._RULE_STOP_THAT_TRUCK;		
 		}
 	}
+	public void parse_idleSprite3D(String s){
+		int sprite_num = Integer.parseInt(sub(s,',',0));
+		String sprite_file=sub(s,',',1);
+		String trans=sub(s,',',2);
+		String scale_factor = sub(s,',',3);
+		Group group = loadSprite(sprite_file);
+		TPoint point = getPoint(trans);
+		TPoint scale = getPoint(scale_factor);
+		TIdleSprite3D sprite = new TIdleSprite3D((Group)group.duplicate(),point,scale);
+		myLevel.addIdleSprite(sprite_num,sprite);
+		System.out.println("Adding sprite3D!");
+	}	
+	
+	
 	public void parse_levelTruckModel(String s){
 		String truck_model_number="";		
 		String model_file="";		
@@ -83,7 +109,7 @@ public class LevelParser{
 	public void parse_sourceModel(String s){
 		int src_num = Integer.parseInt(sub(s,',',0));
 		TBuilding src_building=getBuilding(s);	
-		myLevel.addSource(Integer.parseInt(source_num),building);
+		myLevel.addSource(src_num,src_building);
 	}
 	public void parse_destinationModel(String s){
 		int dest_num = Integer.parseInt(sub(s,',',0));
@@ -111,6 +137,14 @@ public class LevelParser{
 	
 	
 	
+	public TPoint getPoint(String s){
+		int x = Integer.parseInt(sub(s,':',0));
+		int y = Integer.parseInt(sub(s,':',1));
+		int z = Integer.parseInt(sub(s,':',2));
+		return new TPoint(x,y,z);
+			
+	}	
+	
 	public String sub(String l,char d,int n){
 		String line = l;char del = d;int num=n;
 		//int start = 0;
@@ -123,6 +157,29 @@ public class LevelParser{
 		}
 		return ret.trim();
 	}	
+	public Group loadSprite(String img_file){
+		try{
+			if(models.get(img_file)==null){
+				Image img = Image.createImage(img_file);
+				Image2D img2D = new Image2D(Image2D.RGBA,img);
+	   		CompositingMode cm = new CompositingMode();
+				cm.setBlending(CompositingMode.ALPHA);
+            Appearance app = new Appearance();
+            app.setCompositingMode(cm);
+            Sprite3D sprt3D = new Sprite3D(true,img2D,app);
+            Group retGroup = new Group();
+            retGroup.addChild(sprt3D);
+				models.put(img_file,retGroup);
+				return retGroup;
+			}else{
+				//from cache
+				return (Group)models.get(img_file);
+			}
+		}catch(Exception e){e.printStackTrace();}
+		return null;	
+	}
+
+
 	
 	public Group loadModel(String mod_file){
 		try{

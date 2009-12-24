@@ -54,7 +54,7 @@ public class TGame2 extends MIDlet  implements CommandListener {
 			myTankControl = new TankControl(myLevel.playersGroup);
          TCamera GameCamera = new TCamera(myLevel.camera,myTankControl,FRAMES_PER_SECOND);
                         
-                        myGameLogic = new GameLogic(myTankControl,myLevel,GameCamera);
+                        myGameLogic = new GameLogic(myLevel,myTankControl,myLevel,GameCamera);
 			//myGameLogic = new GameLogic(myTankControl,gameLoader.groundGroup,gameLoader.myWorld,GameCamera);
 			myTimerTask = new TGameTimerTask(myGameLogic,myCanvas,1000/FRAMES_PER_SECOND);
 			rayInterSection = new RayIntersection();
@@ -132,7 +132,7 @@ public class TGame2 extends MIDlet  implements CommandListener {
 		int Validity = myLevel.myWorld.animate((int)time);
 		myGraphics3D.bindTarget(g);
 		myGraphics3D.setViewport(0,0,myCanvas.getWidth(),myCanvas.getHeight());
-		myGraphics3D.render(gameLoader.myWorld);
+		myGraphics3D.render(myLevel.myWorld);
 		myGraphics3D.releaseTarget();
                 elapsed = System.currentTimeMillis()-start;
                 time += (int)elapsed;

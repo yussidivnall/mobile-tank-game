@@ -1,0 +1,4 @@
+ai_rules:stop_that_truck
+ai_spawn_timing:at_a_time,1
+ai_spawn_location:random_source
+ai_target_destination:random_destination

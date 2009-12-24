@@ -1,1 +1,17 @@
-this is actually called TGame2, the easiest way I found to run it is in the WTK apps directort, create TGame2 either as a link to mobile-tank-game, or as a directory with the contents of mobile-tank-game
+Work in progress, aims to be the best game ever concieved on a mobile phone.
+Ok not, aims to be a pretty fun game
+
+
+This is actually called TGame2, the easiest way I found to run it is in the WTK apps directory, create TGame2 either as a link to mobile-tank-game, or as a directory with the contents of mobile-tank-game/
+
+to run with WTK on *nix:
+link called TGame2 from mobile-tank-game to WTK2.x.x/apps/
+so: ln -s /PATH/mobile-tank-game PATH_TO_WTK2.x.x/apps/TGame2
+then KToolbar and open TGame2
+
+or
+
+mkdir PATH_TO_WTK2.x.x/apps/TGame2
+cp -r /PATH/mobile-tank-game/* PATH_TO_WTK2.x.x/apps/TGame2/
+ktoolbar
+and open TGame2

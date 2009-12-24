@@ -20,15 +20,28 @@ public class Level{
 	Sprite3D explosionSprite;
 	
 	Group groundGroup;
-	Hashtable trucks;	
+		
 	Background myBackground;
-	Hashtable sources;
-	Hashtable destinations;	
+	
+	Hashtable trucks; // stores only the Group
+	Hashtable sources; // stores TBuilding
+	Hashtable destinations;	// stores TBuilding
+	Hashtable idles; // stores TIdleSprite3D - objects that do nothing, trees... (Doesn't have to be sprites); 	
+	
+	Hashtable targets; // stores TTarget
+	int lastTarget=0;	
+	
+	TGameAI myAI;
 	
 	Level(World w){
 		trucks = new Hashtable();	
 		sources=new Hashtable(); // index,TBuilding
 		destinations=new Hashtable();
+		idles = new Hashtable();		
+		targets = new Hashtable();		
+		
+		myAI = new TGameAI(this);		
+		
 		myWorld = w;
 		try{
 			init_world();
@@ -78,7 +91,7 @@ public class Level{
 		myWorld.setBackground(myBackground);
 		loadSources();
 		loadDestinations();
-
+		loadIdles();
 		
 		}catch(Exception e){e.printStackTrace();}            
 	}
@@ -91,13 +104,27 @@ public class Level{
 			}
 	}
 	public void loadDestinations(){
-			/*			
+				
 			for(Enumeration e=destinations.elements();e.hasMoreElements();){
 				TBuilding build=(TBuilding)e.nextElement();
 				putBuilding(build);			
 			}	
-			*/			
+						
 	}
+	public void loadIdles(){
+				
+			for(Enumeration e=idles.elements();e.hasMoreElements();){
+				TIdleSprite3D sprite=(TIdleSprite3D)e.nextElement();
+				myWorld.addChild(sprite.group);
+				sprite.group.setTranslation(sprite.translation.X,sprite.translation.Y,sprite.translation.Z);
+				sprite.group.scale(sprite.scale.X,sprite.scale.Y,sprite.scale.Z);				
+				//putBuilding(sprite);			
+			}	
+						
+	}
+	
+	
+	
 	public void putBuilding(TBuilding build){
 		myWorld.addChild(build.group);
 		build.group.setTranslation(build.translation.X,build.translation.Y,build.translation.Z);
@@ -120,4 +147,25 @@ public class Level{
 	public void addDestination(int num,TBuilding build){
 		destinations.put(new Integer(num),build);	
 	}
+	public void addIdleSprite(int num,TIdleSprite3D sprite){
+		idles.put(new Integer(num),sprite);
+	}	
+	public void addTarget(TTarget target){
+	}	
+	
+	
+	public void SomethingShot(Node n){
+		for (Enumeration e=sources.elements();e.hasMoreElements();){
+			TBuilding s=(TBuilding)e.nextElement();
+			if(n.getParent()==s.group)System.out.println("Found you!!!");			
+			System.out.println("Building in list: "+s.group);			
+			System.out.println("Parent of Node: "+n.getParent());
+			//if(n.equals((Mesh)s.group))System.out.println("In sources hit");
+		}	
+	}
+	public void advance(){
+		myAI.advance();
+		//Do animations	
+	}	
+	
 }

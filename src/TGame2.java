@@ -56,7 +56,7 @@ public class TGame2 extends MIDlet  implements CommandListener {
                         
                         myGameLogic = new GameLogic(myTankControl,myLevel,GameCamera);
 			//myGameLogic = new GameLogic(myTankControl,gameLoader.groundGroup,gameLoader.myWorld,GameCamera);
-			myTimerTask = new TGameTimerTask(myGameLogic,myCanvas,1000/FRAMES_PER_SECOND);
+			myTimerTask = new TGameTimerTask(myLevel,myGameLogic,myCanvas,1000/FRAMES_PER_SECOND);
 			rayInterSection = new RayIntersection();
                         
 		}catch(Exception e){
