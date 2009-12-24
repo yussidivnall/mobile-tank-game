@@ -155,7 +155,9 @@ public class Level{
 
 	public void addTarget(TTarget target){
 		myWorld.addChild(target.group);
-		target.group.setTranslation(target.source.X,target.source.Y,target.source.Z);	
+		//target.group.setTranslation(target.source.X,target.source.Y,target.source.Z);	
+		targets.put(new Integer(lastTarget),target);
+		lastTarget++;	
 	}	
 	
 	
@@ -170,6 +172,13 @@ public class Level{
 	}
 	public void advance(){
 		myAI.advance();
+		/*		
+		for(Enumeration e=targets.elements();e.hasMoreElements();){
+			TTarget t = (TTarget)e.nextElement();
+			t.advance();		
+		}
+		*/	
+		
 		//Do animations	
 	}	
 	

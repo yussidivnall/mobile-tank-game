@@ -1,8 +1,9 @@
 import java.util.Random;
+import java.util.*;
 import javax.microedition.m3g.*;
 
 public class TGameAI{
-	
+	float distance_error=10;
 
 	//Rulesets
 	public final int STOP_THAT_TRUCK=1;
@@ -57,7 +58,15 @@ public class TGameAI{
 		if(check_spawn()){
 			System.out.println("Need to spawn");
 			spawn();		
-		}	
+		}
+		for(Enumeration e=myLevel.targets.elements();e.hasMoreElements();){
+			TTarget t = (TTarget)e.nextElement();
+			if(check_destination(t))t.moving=false;			
+			t.advance();
+			
+		}		
+		
+		
 	}
 	public void spawn(){
 		int num_src=myLevel.sources.size();int num_dest=myLevel.destinations.size();
@@ -77,8 +86,11 @@ public class TGameAI{
 				
 		Group group=(Group)myLevel.trucks.get(new Integer(target_model));		
 		TTarget target= new TTarget(group,starting_point,ending_point);
-		myLevel.addTarget(target);
 		
+		TControl controler = new TControl(target);
+		target.setControl(controler);
+		
+		myLevel.addTarget(target);		
 		targets_alive++;
 		
 	}	
@@ -87,4 +99,29 @@ public class TGameAI{
 		if(spawn_rule==AT_A_TIME && (targets_alive < spawn_timing ))return true;	
 		return false;
 	}
+	
+	boolean check_destination(TTarget target){
+		//Checks if target has reached destination
+		//This is not reliable and requires a massive error margin (I think that's to do with how i calculate atan)
+		//Correction - it's broken!		
+		float position[] = new float[3];
+		target.group.getTranslation(position);
+		int x=(int)position[0];
+		int z=(int)position[2];
+
+/*
+		System.out.println("destination X "+target.destination.X + " Z: "+target.destination.Z);		
+		System.out.println("rangeX >"+(target.destination.X-distance_error) + " and X < "+(target.destination.X+distance_error));
+		System.out.println("rangeZ >"+(target.destination.Z-distance_error) + " and Z < "+(target.destination.Z+distance_error));
+		System.out.println("x:"+x+" z:"+z);
+*/
+		//if(x==target.destination.X && z==target.destination.Z)return true;		
+
+		if(x > target.destination.X-distance_error && x < target.destination.X+distance_error && z > target.destination.Z-distance_error && z < target.destination.Z+distance_error)return true;
+		//if(z > target.destination.Z - distance_error && z < target.destination.Z+distance_error)return true;		
+		return false;
+	}
+
+
+
 }
