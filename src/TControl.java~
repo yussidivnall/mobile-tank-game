@@ -13,25 +13,32 @@ public class TControl{
 						
 	}	
 	public void setStartingPoint(){
-			if(myTarget.source.X==myTarget.destination.X){
+
+			/*if(myTarget.source.X==myTarget.destination.X){
 				if(myTarget.source.Z > myTarget.destination.Z){
 					rotationY=180;
 				}else{
 					rotationY=0;
 				}
+
 			}else if (myTarget.source.Z==myTarget.destination.Z){
 				if(myTarget.source.X > myTarget.destination.X){
 					rotationY=270;
 				}else{
 					rotationY=90;
 				}
+
 			}else{
 				float opp = myTarget.destination.X - myTarget.source.X;
 				float adj = myTarget.destination.Z - myTarget.source.Z;
 				float ratio = (float)opp/adj;
 				rotationY=TMath.atan(ratio);
 			}
-			myTarget.group.preRotate(rotationY,0,1,0);			
+			*/
+				float opp = myTarget.destination.X - myTarget.source.X;
+				float adj = myTarget.destination.Z - myTarget.source.Z;
+				rotationY = TMath.angle(opp,adj);
+				myTarget.group.preRotate(rotationY,0,1,0);			
 			
 	}	
 	

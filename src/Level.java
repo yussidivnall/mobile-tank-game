@@ -162,13 +162,28 @@ public class Level{
 	
 	
 	public void SomethingShot(Node n){
+	
+		/*		
 		for (Enumeration e=sources.elements();e.hasMoreElements();){
 			TBuilding s=(TBuilding)e.nextElement();
 			if(n.getParent()==s.group)System.out.println("Found you!!!");			
 			System.out.println("Building in list: "+s.group);			
 			System.out.println("Parent of Node: "+n.getParent());
 			//if(n.equals((Mesh)s.group))System.out.println("In sources hit");
-		}	
+		}
+		*/
+		for (Enumeration e=targets.elements();e.hasMoreElements();){
+			TTarget t=(TTarget)e.nextElement();
+			if(n.getParent()==t.group){
+				t.shot();
+				myAI.informShot(t);
+				if(t.hit_points <=0){				
+					myWorld.removeChild(t.group);
+					targets.remove(e);
+					myAI.informDestroyed(t);
+				}
+			}
+		}
 	}
 	public void advance(){
 		myAI.advance();

@@ -3,7 +3,7 @@ import java.util.*;
 import javax.microedition.m3g.*;
 
 public class TGameAI{
-	float distance_error=10;
+	float distance_error=5;
 
 	//Rulesets
 	public final int STOP_THAT_TRUCK=1;
@@ -121,7 +121,10 @@ public class TGameAI{
 		//if(z > target.destination.Z - distance_error && z < target.destination.Z+distance_error)return true;		
 		return false;
 	}
-
+	public void informShot(TTarget t){}
+	public void informDestroyed(TTarget t){
+			
+	}
 
 
 }

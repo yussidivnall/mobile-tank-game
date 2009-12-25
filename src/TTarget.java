@@ -19,6 +19,11 @@ public class TTarget{
 	}
 	public void advance(){
 		if(moving)control.advance(speed);
+	}
+	public void shot(){
+		System.out.println("Im hit");
+		hit_points--;	
 	}	
+	
 	
 }
