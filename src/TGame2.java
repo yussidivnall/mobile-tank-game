@@ -36,7 +36,6 @@ public class TGame2 extends MIDlet  implements CommandListener {
 	public TankControl myTankControl;
 	public Level myLevel;
 	
-	
 	public TGame2(){
 		super();	
 		System.out.println("Constructor");
@@ -125,8 +124,7 @@ public class TGame2 extends MIDlet  implements CommandListener {
 	//Midlet Paint Override
 	public void paint(Graphics g){
             
-                start = System.currentTimeMillis();
-                
+      start = System.currentTimeMillis();          
 		g.setColor(0x00);
 		g.fillRect(0,0,myCanvas.getWidth(),myCanvas.getHeight());
 		int Validity = myLevel.myWorld.animate((int)time);
@@ -134,8 +132,9 @@ public class TGame2 extends MIDlet  implements CommandListener {
 		myGraphics3D.setViewport(0,0,myCanvas.getWidth(),myCanvas.getHeight());
 		myGraphics3D.render(myLevel.myWorld);
 		myGraphics3D.releaseTarget();
-                elapsed = System.currentTimeMillis()-start;
-                time += (int)elapsed;
+		g.drawString("Score:"+myLevel.score,0,myCanvas.getHeight()-10,g.BASELINE|g.LEFT);
+      elapsed = System.currentTimeMillis()-start;
+      time += (int)elapsed;
 	};
 
 	

@@ -26,7 +26,7 @@ public class TGameTimerTask extends TimerTask{
 		//System.out.println("Running............");
 		TGameLogic.advanceLogic(Time);
 		GameCanvas.repaint();
-		myLevel.advance();		
+		myLevel.advance(Time);		
 		
 	};
 }

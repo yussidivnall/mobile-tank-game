@@ -19,6 +19,8 @@ public class TGameAI{
 	//Target destination
 	public final int RANDOM_DESTINATION=1;	
 	
+		
+	
 	int rule_set=0;
 	
 	int spawn_rule=0; //AT_A_TIME or EVERY
@@ -54,16 +56,15 @@ public class TGameAI{
 	}	
 	
 //----------
-	public void advance(){
+	public void advance(float time){
 		if(check_spawn()){
 			System.out.println("Need to spawn");
-			spawn();		
+			spawn();
 		}
 		for(Enumeration e=myLevel.targets.elements();e.hasMoreElements();){
 			TTarget t = (TTarget)e.nextElement();
 			if(check_destination(t))t.moving=false;			
-			t.advance();
-			
+			t.advance(time);
 		}		
 		
 		
@@ -89,6 +90,12 @@ public class TGameAI{
 		
 		TControl controler = new TControl(target);
 		target.setControl(controler);
+		// TO GET THIS FROM CONFIG!
+		
+		float s=target.min_speed+random.nextInt((int)target.max_speed)+random.nextFloat();
+		//float s=target.min_speed+(random.nextInt()%target.max_speed);		
+		target.setSpeed(s);		
+		System.out.println("SPEED: "+s);		
 		
 		myLevel.addTarget(target);		
 		targets_alive++;
