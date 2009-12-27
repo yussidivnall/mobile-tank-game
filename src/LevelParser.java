@@ -15,8 +15,8 @@ public class LevelParser{
 	final String GROUND = "level_ground:";
 	final String BACKGROUND  = "level_background:";
 	final String IDLE_SPRITE3D = "level_idle_sprite3d:";
-	final String LEVEL_AI = "level_ai:";	
-	
+	final String LEVEL_AI = "level_ai:";
+	final String LEVEL_BOUNDARIES = "level_boundaries:";
 	Hashtable models; // To check against before loading a model twice!
 	
 	Level myLevel;
@@ -52,11 +52,18 @@ public class LevelParser{
 			if(arg.startsWith(DESTINATION_MODEL)) parse_destinationModel(arg.substring(DESTINATION_MODEL.length()));
 			if(arg.startsWith(IDLE_SPRITE3D)) parse_idleSprite3D(arg.substring(IDLE_SPRITE3D.length()));
 			if(arg.startsWith(LEVEL_AI)) parse_AI(arg.substring(LEVEL_AI.length()));
-			//IDLE_SPRITE3D LEVEL_AI
+			if(arg.startsWith(LEVEL_BOUNDARIES)) parse_boundaries(arg.substring(LEVEL_BOUNDARIES.length()));
+			//IDLE_SPRITE3D LEVEL_AI LEVEL_BOUNDARIES
 		}catch(IOException e){
 			e.printStackTrace();		
 		}
+	}
+	
+	public void parse_boundaries(String s){
+		float a[]=TParser.vec(s);
+		myLevel.setBoundaries(a[0],a[1],a[2],a[3]);	
 	}	
+	
 	public void parse_AI(String s){
 		myLevel.myAI.load(s.trim());	
 	}	

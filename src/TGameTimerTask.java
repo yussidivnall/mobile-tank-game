@@ -7,9 +7,9 @@ public class TGameTimerTask extends TimerTask{
 	TGameCanvas GameCanvas;
 	Level myLevel;
 
-        long Time;
-        long start;
-        long elapsed;
+	long Time;
+   long start;
+   long elapsed;
         
         
 	public TGameTimerTask(Level level,GameLogic GameLogicRef,TGameCanvas TGameCanvasRef,long time){
@@ -25,8 +25,7 @@ public class TGameTimerTask extends TimerTask{
 		//int t = 1; //iincrement in time;
 		//System.out.println("Running............");
 		TGameLogic.advanceLogic(Time);
-		GameCanvas.repaint();
 		myLevel.advance(Time);		
-		
+		GameCanvas.repaint();
 	};
 }

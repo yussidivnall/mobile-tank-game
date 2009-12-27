@@ -12,20 +12,7 @@ public class TMath{
 			if(run > 0)return atan(rise/run);
 			if(run < 0)return atan(rise/run)+180;
 			return (float)0;
-			/*			
-			if(run > 0 && rise > 0){ // checked !
-				return 0+atan(rise/run);			
-			}
-			if(run < 0 && rise > 0){ // checked!
-				return 180+atan(rise/run);			
-			}
-			if(run < 0 && rise < 0){ // checked 
-				return 180+atan(rise/run);			
-			if(run > 0 && rise < 0){
-				return 0+atan(rise/run);			
-			}
-			return ret;
-			*/
+
 	}
 
 

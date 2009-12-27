@@ -6,6 +6,8 @@ import javax.microedition.lcdui.*;
 public class Level{
 	final static int _RULE_STOP_THAT_TRUCK=1;
 
+	float MinX,MaxX,MinZ,MaxZ;
+
 	int score = 0;
 	int rule_set;
 	String Level_Name;
@@ -27,6 +29,7 @@ public class Level{
 	Hashtable sources; // stores TBuilding
 	Hashtable destinations;	// stores TBuilding
 	Hashtable idles; // stores TIdleSprite3D - objects that do nothing, trees... (Doesn't have to be sprites); 	
+	
 	
 	Hashtable targets; // stores TTarget
 	int lastTarget=0;	
@@ -129,6 +132,10 @@ public class Level{
 		myWorld.addChild(build.group);
 		build.group.setTranslation(build.translation.X,build.translation.Y,build.translation.Z);
 		//build.group.setOrientation(1,build.rotation.X,build.rotation.Y,build.rotation.Z);
+	}
+
+	public void setBoundaries(float min_x,float max_x,float min_z,float max_z){
+		MinX=min_x;MaxX=max_x;MinZ=min_z;MaxZ=max_z;	
 	}
 
 	public void setGround(Group g){

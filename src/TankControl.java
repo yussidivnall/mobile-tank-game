@@ -42,10 +42,18 @@ public class TankControl{
 	public void Fire(){
 			localTankGroup.setPickingEnable(false);
 	}
+	
+	
 	public void setTankPosition(float x,float y,float z){
 		localTankGroup.setTranslation(x,y,z);	
 	}
-
+	public void setTankX(float x){
+		localTankGroup.setTranslation(x,getTankPosition()[1],getTankPosition()[2]);
+	}
+	public void setTankZ(float z){
+		localTankGroup.setTranslation(getTankPosition()[0],getTankPosition()[1],z);	
+	}	
+	
 	public float[] getTankPosition(){
 		float Translation[] = new float[3];
 		localTankGroup.getTranslation(Translation);

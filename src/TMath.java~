@@ -9,7 +9,6 @@ public class TMath{
 			if(run == 0){
 				if(rise > 0){return 90;}else{return 270;} // checked !			
 			}
-			
 			if(run > 0)return atan(rise/run);
 			if(run < 0)return atan(rise/run)+180;
 			return (float)0;

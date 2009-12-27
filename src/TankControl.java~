@@ -24,16 +24,36 @@ public class TankControl{
 		Speed = 0f;
 		localTankGroup.setPickingEnable(false);
 	}
+        
+        public boolean isMoving(){
+            return moving;
+        }
+        public Group getTankGroup(){
+            return localTankGroup;
+        }
+        
+        
 	public void FullStop(){
-				
+			moving=false;
+			Accelerating=false;
+			Acceleration=0;
+			Speed=0;	
 	}
 	public void Fire(){
 			localTankGroup.setPickingEnable(false);
 	}
+	
+	
 	public void setTankPosition(float x,float y,float z){
 		localTankGroup.setTranslation(x,y,z);	
 	}
-
+	public void setTankX(float x){
+		localTankGroup.setTranslation(x,getTankPosition()[1],getTankPosition()[2]);
+	}
+	public void setTankZ(float z){
+		localTankGroup.setTranslation(getTankPosition()[0],getTankPosition()[1],z);	
+	}	
+	
 	public float[] getTankPosition(){
 		float Translation[] = new float[3];
 		localTankGroup.getTranslation(Translation);

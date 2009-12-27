@@ -25,8 +25,6 @@ public class GameLogic{
 		myTankControl = tankRef;
 		GroundObject  = (Object3D)Ground.getChild(0);
 		GameCamera = cam;
-      
-		
 		
 		Mesh m = (Mesh)GroundObject;
 		GroundVertexBuffer = m.getVertexBuffer();
@@ -34,6 +32,8 @@ public class GameLogic{
 		float ScaleBias[] = new float[4];
 		GroundVertexArray = GroundVertexBuffer.getPositions(ScaleBias);
 		
+		
+		/*
 		if(GroundVertexArray == null){
 			System.out.println("No Vertex Array");
 		}else System.out.println("Yes Vertex Array");
@@ -41,7 +41,8 @@ public class GameLogic{
 		System.out.println("Scale Bias[1] : "+ScaleBias[1]);
 		System.out.println("Scale Bias[2] : "+ScaleBias[2]);
 		System.out.println("Scale Bias[3] : "+ScaleBias[3]);
-
+		*/
+		
 		GroundPositions = new float[GroundVertexBuffer.getVertexCount()];		
 		GroundLimits[0] = 200;		
 		GroundLimits[1] = -200;
@@ -90,32 +91,25 @@ public class GameLogic{
 		*/	
 		
 	public void GroundBorders(){
-				if(myTankControl.getTankPosition()[0]>GroundLimits[0]){
-					System.out.println("MAX_X PAST");				
-					myTankControl.setTankPosition(GroundLimits[0],myTankControl.getTankPosition()[1],myTankControl.getTankPosition()[2]);
-					//myTankControl.moving=false;
-					myTankControl.FullStop();				
+			if(myTankControl.getTankPosition()[0]>myLevel.MaxX || 
+				myTankControl.getTankPosition()[0]<myLevel.MinX || 
+				myTankControl.getTankPosition()[2]>myLevel.MaxZ || 
+				myTankControl.getTankPosition()[2]<myLevel.MinZ){
+
+				if(myTankControl.getTankPosition()[0]>myLevel.MaxX){
+					myTankControl.setTankX(myLevel.MaxX);
+				}	
+				if(myTankControl.getTankPosition()[0]<myLevel.MinX){
+					myTankControl.setTankX(myLevel.MinX);							
 				}
-				
-				if(myTankControl.getTankPosition()[0]<GroundLimits[1]){
-					System.out.println("MIN_X PAST");				
-					myTankControl.setTankPosition(GroundLimits[1],myTankControl.getTankPosition()[1],myTankControl.getTankPosition()[2]);				
-					//myTankControl.moving=false;				
-					myTankControl.FullStop();				
+				if(myTankControl.getTankPosition()[2]>myLevel.MaxZ){
+					myTankControl.setTankZ(myLevel.MaxZ);
 				}
-				if(myTankControl.getTankPosition()[2]>GroundLimits[2]){
-					myTankControl.setTankPosition(myTankControl.getTankPosition()[0],myTankControl.getTankPosition()[1],GroundLimits[2]);					
-					System.out.println("MAX_Z PAST");				
-					//myTankControl.moving=false;
-					myTankControl.FullStop();				
+				if(myTankControl.getTankPosition()[2]<myLevel.MinZ){
+					myTankControl.setTankZ(myLevel.MinZ);									
 				}
-				if(myTankControl.getTankPosition()[2]<GroundLimits[3]){					
-					myTankControl.setTankPosition(myTankControl.getTankPosition()[0],myTankControl.getTankPosition()[1],GroundLimits[2]);					
-					System.out.println("MIN_Z PAST");				
-					//myTankControl.moving=false;
-					myTankControl.FullStop();				
-				}				
-			
+				myTankControl.FullStop();
+			}
 	};
 	public void tankFire(){
 		myTankControl.Fire();
@@ -124,7 +118,7 @@ public class GameLogic{
 		RayIntersection rayIntersection=new RayIntersection();
 		if(myLevel.myWorld.pick(-1,position[0],position[1],position[2],orientation[0],orientation[1],orientation[2],rayIntersection)){
 			//somthing was hit
-                        System.out.println("Picked something");
+         System.out.println("Picked something");
 			Node objectIntersected = rayIntersection.getIntersected();
                         
                         //Do the explosion sprite
@@ -170,8 +164,6 @@ public class GameLogic{
             }else{
                 GameCamera.decelerate(myTankControl.Speed);
             }
-            
-            
         }
         
         
@@ -232,7 +224,7 @@ public class GameLogic{
 		if (myTankControl.turning){ // turning
 			if(myTankControl.direction==true){
 				myTankControl.rotateTank(myTankControl.ROTATION_ANGLE);
-				System.out.println("Direction "+myTankControl.direction);
+				//System.out.println("Direction "+myTankControl.direction);
 			}else {
 				myTankControl.rotateTank(-(myTankControl.ROTATION_ANGLE));
 			}

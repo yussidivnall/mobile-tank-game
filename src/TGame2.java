@@ -14,19 +14,15 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.*;
 public class TGame2 extends MIDlet  implements CommandListener {
 
-        long start,elapsed,time =0;
+   long start,elapsed,time =0;
     
 	int FRAMES_PER_SECOND=20;
-	int Speed;
 	private Display myDisplay = null;
 	Graphics3D myGraphics3D = Graphics3D.getInstance();
 	World myWorld = null;
-	//TLoader gameLoader;
 	
 	//Tank's Ray Intersection (Collision Detection)
-	RayIntersection rayInterSection;
-	Object3D RayObject;
-        TGameCanvas myCanvas = null;
+   TGameCanvas myCanvas = null;
 	
 
 	
@@ -39,25 +35,19 @@ public class TGame2 extends MIDlet  implements CommandListener {
 	public TGame2(){
 		super();	
 		System.out.println("Constructor");
-
-	
 		myDisplay = Display.getDisplay(this);
 		myCanvas = new TGameCanvas(this);
-		try {
-                    
+		try {         
          myWorld = new World();
 			myLevel = new Level(myWorld);         
 			myLevel.load("level.txt");         
          
-			//gameLoader = new TLoader(myWorld); // Get rid of this and replace with myLevel!
 			myTankControl = new TankControl(myLevel.playersGroup);
-         TCamera GameCamera = new TCamera(myLevel.camera,myTankControl,FRAMES_PER_SECOND);
+         TCamera GameCamera = new TCamera(myLevel.camera);
                         
-                        myGameLogic = new GameLogic(myTankControl,myLevel,GameCamera);
-			//myGameLogic = new GameLogic(myTankControl,gameLoader.groundGroup,gameLoader.myWorld,GameCamera);
+         myGameLogic = new GameLogic(myTankControl,myLevel,GameCamera);
 			myTimerTask = new TGameTimerTask(myLevel,myGameLogic,myCanvas,1000/FRAMES_PER_SECOND);
-			rayInterSection = new RayIntersection();
-                        
+			               
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -73,7 +63,7 @@ public class TGame2 extends MIDlet  implements CommandListener {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-                System.out.println("startApp end");
+      System.out.println("startApp end");
 	}
 	public void printSysData(){
 		System.out.println("SystemData....");
@@ -84,17 +74,17 @@ public class TGame2 extends MIDlet  implements CommandListener {
 	public void commandAction(Command c,Displayable d){};
 	
 	public void SpeedUp(boolean forwards){
-		System.out.println("Speeeeeeeeeeeeeeeeeeeeeeeeeeeeeed");
+		//System.out.println("Speeeeeeeeeeeeeeeeeeeeeeeeeeeeeed");
 		myTankControl.moving=true;
 		myTankControl.Accelerating = true;
 		myTankControl.forwards=forwards;
-		System.out.println("Moving?:"+myTankControl.moving);
+		//System.out.println("Moving?:"+myTankControl.moving);
 	}
 
 	public void SlowDown(){
-		System.out.println("Slooooooooooooooooooooooooooooooooowwwwwwwwwwwwww");
+		//System.out.println("Slooooooooooooooooooooooooooooooooowwwwwwwwwwwwww");
 		myTankControl.Accelerating = false; //deselarating
-		System.out.println("Moving?:"+myTankControl.moving);
+		//System.out.println("Moving?:"+myTankControl.moving);
 	}	
 	
 	public void Turn(boolean direction){
@@ -106,7 +96,7 @@ public class TGame2 extends MIDlet  implements CommandListener {
 	}
 	
 	public void Fire(){
-		System.out.println("Fire!");
+		//System.out.println("Fire!");
 		myGameLogic.tankFire();
 	}
 	/*
