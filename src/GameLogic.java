@@ -4,56 +4,18 @@ public class GameLogic{
 	TankControl myTankControl;
 	TCamera GameCamera;
 	Group Ground;
-	float GroundPositions[];	
-	float GroundLimits[]={0,0,0,0};//[MAX_X,MIN_X,MAX_Z,MIN_Z]	
-	
-	Object3D GroundObject;
-	IndexBuffer GroundIndexBuffer;
-	VertexBuffer GroundVertexBuffer;
-	VertexArray GroundVertexArray;
 	
 	float DISTANCE_FROM_GROUND=0.05f;
 	float NORMALS_ACCURACY=0.5f;
 	Level myLevel;
         
-	int GroundIndices[];
 	public GameLogic(TankControl tankRef,Level level,TCamera cam){
 		
 		myLevel = level;
 		System.out.println("GameLogic Construction");
 		Ground=myLevel.groundGroup;
 		myTankControl = tankRef;
-		GroundObject  = (Object3D)Ground.getChild(0);
 		GameCamera = cam;
-		
-		Mesh m = (Mesh)GroundObject;
-		GroundVertexBuffer = m.getVertexBuffer();
-		System.out.println("Ground Vertex Buffer count : " + GroundVertexBuffer.getVertexCount());
-		float ScaleBias[] = new float[4];
-		GroundVertexArray = GroundVertexBuffer.getPositions(ScaleBias);
-		
-		
-		/*
-		if(GroundVertexArray == null){
-			System.out.println("No Vertex Array");
-		}else System.out.println("Yes Vertex Array");
-		System.out.println("Scale Bias[0] : "+ScaleBias[0]);
-		System.out.println("Scale Bias[1] : "+ScaleBias[1]);
-		System.out.println("Scale Bias[2] : "+ScaleBias[2]);
-		System.out.println("Scale Bias[3] : "+ScaleBias[3]);
-		*/
-		
-		GroundPositions = new float[GroundVertexBuffer.getVertexCount()];		
-		GroundLimits[0] = 200;		
-		GroundLimits[1] = -200;
-		GroundLimits[2] = 200;
-		GroundLimits[3] = -200;		
-		
-		System.out.println("MAX_X:"+GroundLimits[0]+";MIN_X:"+GroundLimits[1]+";MAX_Z"+GroundLimits[2]+";MIN_Z"+GroundLimits[3]);
-
-		byte buffer[] ;
-		//GroundVertexArray.get(0,10,buffer);	
-		
 	};
 		public void GroundInteraction(){
 			float position[] = myTankControl.getTankPosition();
@@ -87,25 +49,24 @@ public class GameLogic{
 			
 		}
 		/*
-		*	Checks that ground borders aren't exceeded
+		*	Checks that level boundaries aren't exceeded
 		*/	
 		
 	public void GroundBorders(){
-			if(myTankControl.getTankPosition()[0]>myLevel.MaxX || 
-				myTankControl.getTankPosition()[0]<myLevel.MinX || 
-				myTankControl.getTankPosition()[2]>myLevel.MaxZ || 
-				myTankControl.getTankPosition()[2]<myLevel.MinZ){
-
-				if(myTankControl.getTankPosition()[0]>myLevel.MaxX){
+			float tankX = myTankControl.getTankPosition()[0];
+			float tankZ = myTankControl.getTankPosition()[2];
+			if(tankX>myLevel.MaxX ||tankX<myLevel.MinX || 
+				tankZ>myLevel.MaxZ ||tankZ<myLevel.MinZ){
+				if(tankX>myLevel.MaxX){
 					myTankControl.setTankX(myLevel.MaxX);
 				}	
-				if(myTankControl.getTankPosition()[0]<myLevel.MinX){
+				if(tankX<myLevel.MinX){
 					myTankControl.setTankX(myLevel.MinX);							
 				}
-				if(myTankControl.getTankPosition()[2]>myLevel.MaxZ){
+				if(tankZ>myLevel.MaxZ){
 					myTankControl.setTankZ(myLevel.MaxZ);
 				}
-				if(myTankControl.getTankPosition()[2]<myLevel.MinZ){
+				if(tankZ<myLevel.MinZ){
 					myTankControl.setTankZ(myLevel.MinZ);									
 				}
 				myTankControl.FullStop();
@@ -140,7 +101,7 @@ public class GameLogic{
 								TGameExplosionThread animThread = new TGameExplosionThread(explosion,explosionGroup,myLevel.myWorld);
 								animThread.start();	                        
                         //if it wasn't the ground that was hit, then the game engine needs to know
-                        if(!objectIntersected.equals(GroundObject)){           
+                        if(!objectIntersected.getParent().equals(myLevel.groundGroup)){           
                                     //objectIntersected.postRotate(45,0,1,0);
                                     myLevel.SomethingShot(objectIntersected);
                         }					

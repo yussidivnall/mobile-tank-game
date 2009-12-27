@@ -12,7 +12,7 @@ import java.util.TimerTask;
 import java.util.*;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.*;
-public class TGame2 extends MIDlet  implements CommandListener {
+public class TGame2 extends MIDlet   {
 
    long start,elapsed,time =0;
     
@@ -20,10 +20,8 @@ public class TGame2 extends MIDlet  implements CommandListener {
 	private Display myDisplay = null;
 	Graphics3D myGraphics3D = Graphics3D.getInstance();
 	World myWorld = null;
-	
-	//Tank's Ray Intersection (Collision Detection)
-   TGameCanvas myCanvas = null;
-	
+   TGameCanvas gameCanvas = null;
+	MenuCanvas menuCanvas = null;
 
 	
 	TimerTask myTimerTask = null;
@@ -36,35 +34,34 @@ public class TGame2 extends MIDlet  implements CommandListener {
 		super();	
 		System.out.println("Constructor");
 		myDisplay = Display.getDisplay(this);
-		myCanvas = new TGameCanvas(this);
-		try {         
-         myWorld = new World();
-			myLevel = new Level(myWorld);         
-			myLevel.load("level.txt");         
-         
-			myTankControl = new TankControl(myLevel.playersGroup);
-         TCamera GameCamera = new TCamera(myLevel.camera);
-                        
-         myGameLogic = new GameLogic(myTankControl,myLevel,GameCamera);
-			myTimerTask = new TGameTimerTask(myLevel,myGameLogic,myCanvas,1000/FRAMES_PER_SECOND);
-			               
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+		gameCanvas = new TGameCanvas(this);
+		menuCanvas = new MenuCanvas(this);
+      myWorld = new World();
+		myLevel = new Level(myWorld);         
 		System.out.println("Constructor End");
 	}
 
 	public void startApp(){
 		System.out.println("startApp");
-		myDisplay.setCurrent(myCanvas);
-		printSysData();
-		try {
-			myTimer.schedule(myTimerTask,0,1000/FRAMES_PER_SECOND);
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
+		myDisplay.setCurrent(menuCanvas);		
+		//startGame("level.txt");		
       System.out.println("startApp end");
 	}
+	public void startMenu(){
+	}	
+	
+	public void startGame(String level_file){
+			myLevel.load(level_file);
+			myTankControl = new TankControl(myLevel.playersGroup);
+         TCamera GameCamera = new TCamera(myLevel.camera);
+         myGameLogic = new GameLogic(myTankControl,myLevel,GameCamera);
+			myTimerTask = new TGameTimerTask(myLevel,myGameLogic,gameCanvas,1000/FRAMES_PER_SECOND);
+			myDisplay.setCurrent(gameCanvas);
+			myTimer.schedule(myTimerTask,0,1000/FRAMES_PER_SECOND);
+	}	
+	
+	
+	
 	public void printSysData(){
 		System.out.println("SystemData....");
 		System.out.println(System.getProperty("javax.microedition.m3g.version"));
@@ -78,13 +75,10 @@ public class TGame2 extends MIDlet  implements CommandListener {
 		myTankControl.moving=true;
 		myTankControl.Accelerating = true;
 		myTankControl.forwards=forwards;
-		//System.out.println("Moving?:"+myTankControl.moving);
 	}
 
 	public void SlowDown(){
-		//System.out.println("Slooooooooooooooooooooooooooooooooowwwwwwwwwwwwww");
 		myTankControl.Accelerating = false; //deselarating
-		//System.out.println("Moving?:"+myTankControl.moving);
 	}	
 	
 	public void Turn(boolean direction){
@@ -96,14 +90,13 @@ public class TGame2 extends MIDlet  implements CommandListener {
 	}
 	
 	public void Fire(){
-		//System.out.println("Fire!");
 		myGameLogic.tankFire();
 	}
 	/*
 	/*Midlet abstract methods override
 	*/
 	public void destroyApp(boolean unconditional)throws MIDletStateChangeException{
-		myCanvas.terminate();
+		gameCanvas.terminate();
 		myTimerTask = null;
 		myTimer.cancel();
 		myTimer=null;
@@ -116,13 +109,13 @@ public class TGame2 extends MIDlet  implements CommandListener {
             
       start = System.currentTimeMillis();          
 		g.setColor(0x00);
-		g.fillRect(0,0,myCanvas.getWidth(),myCanvas.getHeight());
+		g.fillRect(0,0,gameCanvas.getWidth(),gameCanvas.getHeight());
 		int Validity = myLevel.myWorld.animate((int)time);
 		myGraphics3D.bindTarget(g);
-		myGraphics3D.setViewport(0,0,myCanvas.getWidth(),myCanvas.getHeight());
+		myGraphics3D.setViewport(0,0,gameCanvas.getWidth(),gameCanvas.getHeight());
 		myGraphics3D.render(myLevel.myWorld);
 		myGraphics3D.releaseTarget();
-		g.drawString("Score:"+myLevel.score,0,myCanvas.getHeight()-10,g.BASELINE|g.LEFT);
+		g.drawString("Score:"+myLevel.score,0,gameCanvas.getHeight()-10,g.BASELINE|g.LEFT);
       elapsed = System.currentTimeMillis()-start;
       time += (int)elapsed;
 	};
@@ -139,4 +132,3 @@ public class TGame2 extends MIDlet  implements CommandListener {
 		}
 	}
 }
-
