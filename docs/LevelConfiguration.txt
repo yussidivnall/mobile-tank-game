@@ -1,0 +1,21 @@
+The levels of this game are defined as textfiles in the res directory.
+level_name: An arbirtary level name
+level_intro: the introduction level to the screen, unimplemented
+level_rules: the rulesets, is actually defiened in the ai configurations, so far only "Stop_that_truck" ruleset is implemented
+...
+level_source_model:<INT Index>,<String /Modelfile>,<FLOAT TranslationX>:<FLOAT - Y>:<FLOAT Z>,<FLOAT Rotation>:<X>:<Y>:<Z>
+level_destination_model::<INT Index>,<String /Modelfile>,<FLOAT TranslationX>:<FLOAT - Y>:<FLOAT Z>,<FLOAT Rotation>:<X>:<Y>:<Z>
+
+These define the sources from which the targets leave and travel to, 
+the first int is the index, it is used to index the target and destination objects in their coresponding hashtable, 
+the second arg, is a string starting with a / which define the model to load from the res, must be an m3g file with a single object, the model.
+the third argument, is 3 floats seperated by a : in the form n:n:n which define the position of the model on the level,
+the fourth is the rotation, 4 floats in the form n:n:n:n is not yet implemented, but will be angle:x:y:z
+
+level_truck_model:<INT Index>,<String /Modelfile>
+
+level_ground:
+level_background:
+level_idle_sprite3d:
+level_boundaries:
+level_ai:

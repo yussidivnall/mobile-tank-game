@@ -3,8 +3,8 @@ import javax.microedition.m3g.*;
 public class TGameExplosionThread extends Thread{
 	final int FRAME_WIDTH=100;
 	final int IMAGE_HEIGHT=100;
-	final int IMAGE_WIDTH = 800;
-	final int delay=100;
+	final int IMAGE_WIDTH = 1700;
+	final int delay=50;
 	Sprite3D mySprite;	
 	Group exp_group; // needed to remove group when animation done  quite ugly!!!
 	World my_world;	

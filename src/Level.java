@@ -72,7 +72,7 @@ public class Level{
 		/*	VERY TEMPORARY!!!!!
 		*/		
 				//Explosion
-		      Image explosionImg = Image.createImage("/explosion1.gif");
+		      Image explosionImg = Image.createImage("/explosion2.gif");
             Image2D explosionImg2D = new Image2D(Image2D.RGBA,explosionImg);
 	
 	   		CompositingMode cm = new CompositingMode();
@@ -84,6 +84,16 @@ public class Level{
             
             explosionSprite = new Sprite3D(true,explosionImg2D,app);
             explosionSprite.setTranslation(0, 0, 0);            
+            
+            /*
+				Fog f = new Fog();
+				f.setColor(0xFF0000);
+				f.setDensity(0.9f);
+				f.setLinear(1f,5f);
+				Appearance wa = new Appearance();
+				wa.setFog(f);
+				*/				
+				//myWorld.setAppearance(wa);            
               
 	}
 	//Do all the parsing from here, maybe needs to be in a different class for the sake of cleanliness

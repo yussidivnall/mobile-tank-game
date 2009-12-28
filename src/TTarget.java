@@ -19,9 +19,7 @@ public class TTarget{
 	TTarget(Group g,TPoint src,TPoint dest){
 		group=(Group)g.duplicate();
 		source=src;
-		destination=dest;
-		
-		
+		destination=dest;		
 		//test_anim();
 		//init_anims();
 	}
@@ -38,7 +36,10 @@ public class TTarget{
 		if(moving)control.advance(speed);
 	}
 	public void shot(){
+		//
 		System.out.println("Im hit");
+		//shake_track.getKeyframeSequance().		
+				
 		hit_points--;
 	}	
 	
@@ -52,7 +53,7 @@ public class TTarget{
 	public void init_anims(){
 		KeyframeSequence shot_seq = new KeyframeSequence(3,4,KeyframeSequence.LINEAR);
 		shot_seq.setKeyframe(0,0,new float[]{0,1,0,1f});
-		shot_seq.setKeyframe(1,500,new float[]{0,-1f,0,2.25f});
+		shot_seq.setKeyframe(1,500,new float[]{0,1f,0,2.25f});
 		shot_seq.setKeyframe(2,1000,new float[]{0,1,0,1f});
 		shot_seq.setDuration(1500);
 		AnimationTrack shot_track= new AnimationTrack(shot_seq,AnimationTrack.ORIENTATION);

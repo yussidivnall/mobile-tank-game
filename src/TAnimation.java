@@ -1,8 +1,7 @@
 import javax.microedition.m3g.*;
 public class TAnimation{
+	boolean destroy=false;
 	Group group;
-	
-	TAnimation(Group g,TPoint p){
+	public void advance(int time){
 	}
-
 }

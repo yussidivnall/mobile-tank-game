@@ -3,7 +3,7 @@ import javax.microedition.m3g.*;
 public class TGameExplosionThread extends Thread{
 	final int FRAME_WIDTH=100;
 	final int IMAGE_HEIGHT=100;
-	final int IMAGE_WIDTH = 800;
+	final int IMAGE_WIDTH = 1700;
 	final int delay=100;
 	Sprite3D mySprite;	
 	Group exp_group; // needed to remove group when animation done  quite ugly!!!
@@ -15,6 +15,7 @@ public class TGameExplosionThread extends Thread{
 		exp_group=eg;
 		mySprite.setCrop(0,0,FRAME_WIDTH,IMAGE_HEIGHT);
 		//mySprite.setAlphaThreshold(1);
+		
 		/*
 		CompositingMode cm = new CompositingMode();
 		cm.setBlending(CompositingMode.ALPHA);

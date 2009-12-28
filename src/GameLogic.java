@@ -17,6 +17,10 @@ public class GameLogic{
 		myTankControl = tankRef;
 		GameCamera = cam;
 	};
+	
+		public void CollisionDetection(){
+		}	
+	
 		public void GroundInteraction(){
 			float position[] = myTankControl.getTankPosition();
 			float orientation[] = {0,-1,0}; // look down
@@ -134,6 +138,7 @@ public class GameLogic{
 		if (myTankControl.moving){// needs to update the positioning
 			GroundBorders();			
 			GroundInteraction();
+			CollisionDetection();
          cameraControl();
 		}
 	}
