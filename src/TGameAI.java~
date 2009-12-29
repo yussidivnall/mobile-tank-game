@@ -63,7 +63,14 @@ public class TGameAI{
 		}
 		for(Enumeration e=myLevel.targets.elements();e.hasMoreElements();){
 			TTarget t = (TTarget)e.nextElement();
-			if(check_destination(t))t.moving=false;			
+			if(t.unloading){
+				
+			}
+			if(check_destination(t)){ //&& ruleset == stop_that_truck
+				t.targetReached();
+				
+				//add some animation
+			}		
 			t.advance(time);
 		}		
 		
@@ -94,7 +101,7 @@ public class TGameAI{
 		
 		float s=target.min_speed+random.nextInt((int)target.max_speed)+random.nextFloat();
 		//float s=target.min_speed+(random.nextInt()%target.max_speed);		
-		target.setSpeed(1.5f);		
+		target.setSpeed(s);		
 		System.out.println("SPEED: "+s);		
 		
 		myLevel.addTarget(target);		

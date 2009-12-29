@@ -6,6 +6,7 @@ public class TTarget{
 	TControl control;
 	
 	boolean moving=true;	
+	boolean unloading = false;	
 	
 	float min_speed=0.1f;
 	float max_speed=3.0f;
@@ -21,7 +22,7 @@ public class TTarget{
 		source=src;
 		destination=dest;		
 		//test_anim();
-		init_anims();
+		//init_anims();
 	}
 	public void setControl(TControl c){
 		control=c;	
@@ -42,7 +43,10 @@ public class TTarget{
 				
 		hit_points--;
 	}	
-	
+	public void targetReached(){
+		moving=false;
+		unloading=true;
+	}
 	
 	
 	

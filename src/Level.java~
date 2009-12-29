@@ -13,13 +13,15 @@ public class Level{
 	String Level_Name;
 	
 	
-	
+	TAnimationControl animationControl;
 	World myWorld;	
 	String GAME_OBJECTS ="/GameObjects.m3g"; // Contains in the order:Light(0),Camera(1),Tank(2)
 	Camera camera;	
 	Group playersGroup;
 	Object3D playersObject;
-	Sprite3D explosionSprite;
+	
+	Sprite3D explosionSprite; 
+	TSprite explosion;
 	
 	Group groundGroup;
 		
@@ -43,12 +45,15 @@ public class Level{
 		idles = new Hashtable();		
 		targets = new Hashtable();		
 		
-		myAI = new TGameAI(this);		
-		
 		myWorld = w;
+		animationControl = new TAnimationControl(myWorld);		
+		myAI = new TGameAI(this);		
+				
+		
 		try{
 			init_world();
 		}catch(Exception e){e.printStackTrace();}
+		animationControl = new TAnimationControl(myWorld);
 	}
 	public void init_world() throws IOException{
 		playersGroup = new Group();
@@ -69,6 +74,15 @@ public class Level{
             myWorld.setActiveCamera(camera);
             myWorld.addChild((Node)playersGroup);     
             
+            
+/*            
+            Image2D explode = new Image2D(Image2D.RGBA,Image.createImage("/explosion2.gif")); 
+            CompositingMode comp = new CompositingMode();comp.setBlending(CompositingMode.ALPHA);
+            Appearance appr = new Appearance();appr.setCompositingMode(comp);
+				Sprite3D sprt = new Sprite3D(true,explode,appr);
+*/				            
+            
+            //explosion = new Sprite3D(true,explode,appr);
 		/*	VERY TEMPORARY!!!!!
 		*/		
 				//Explosion
@@ -179,31 +193,52 @@ public class Level{
 	
 	
 	public void SomethingShot(Node n){
-
 		for (Enumeration e=targets.elements();e.hasMoreElements();){
 			TTarget t=(TTarget)e.nextElement();
 			if(n.getParent()==t.group){
 				t.shot();
 				myAI.informShot(t);
 				if(t.hit_points <=0){
-					score+=t.value;	
-					myWorld.removeChild(t.group);
+					targetDestroyed(t);
 					targets.remove(e);
-					myAI.informDestroyed(t);
 				}
 			}
 		}
 	}
-	public void advance(float Time){
-		myAI.advance(Time);
-		/*		
-		for(Enumeration e=targets.elements();e.hasMoreElements();){
-			TTarget t = (TTarget)e.nextElement();
-			t.advance();		
-		}
-		*/	
-		
-		//Do animations	
+	public void targetDestroyed(TTarget t){
+		score+=t.value;	
+		myWorld.removeChild(t.group);		
+		myAI.informDestroyed(t);
+		Sprite3D s = (Sprite3D)explosionSprite.duplicate();
+		s.scale(10,10,10);
+		float f[] = new float[4];
+		t.group.getTranslation(f);
+		TPoint p = new TPoint(f[0],f[1],f[2]);
+		animationControl.addSprite(s,p,100,50,TSprite.PLAY_ONCE);
 	}	
+	
+	public void explodeAnim(Group g){
+		Sprite3D s = (Sprite3D)explosionSprite.duplicate();
+		animationControl.addSprite(s,g,100,50,TSprite.PLAY_ONCE);	
+	}	
+	
+	public void explodeAnim(TPoint p){
+		/*
+		Group g = new Group();		
+		Sprite3D exp = (Sprite3D)explosionSprite.duplicate();		
+		g.addChild(exp);
+		myWorld.addChild(g);
+		g.setTranslation(p.X,p.Y,p.Z);
+		*/
+		
+		//!!!1
+		Sprite3D s = (Sprite3D)explosionSprite.duplicate();
+		animationControl.addSprite(s,p,100,50,TSprite.PLAY_ONCE);
+	}
+	
+	public void advance(long Time){
+		myAI.advance(Time);
+		animationControl.advance(Time);
+	}
 	
 }

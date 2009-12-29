@@ -63,7 +63,14 @@ public class TGameAI{
 		}
 		for(Enumeration e=myLevel.targets.elements();e.hasMoreElements();){
 			TTarget t = (TTarget)e.nextElement();
-			if(check_destination(t))t.moving=false;			
+			if(t.unloading && rule_set==STOP_THAT_TRUCK){
+				
+			}
+			if(check_destination(t)){ //&& ruleset == stop_that_truck
+				t.targetReached();
+				
+				//add some animation
+			}		
 			t.advance(time);
 		}		
 		

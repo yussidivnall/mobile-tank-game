@@ -8,7 +8,7 @@ public class GameLogic{
 	float DISTANCE_FROM_GROUND=0.05f;
 	float NORMALS_ACCURACY=0.5f;
 	Level myLevel;
-        
+   
 	public GameLogic(TankControl tankRef,Level level,TCamera cam){
 		
 		myLevel = level;
@@ -85,25 +85,40 @@ public class GameLogic{
 			//somthing was hit
          System.out.println("Picked something");
 			Node objectIntersected = rayIntersection.getIntersected();
-                        
+
+			//for animation - can do better!!!!
+			//http://www.j2megame.org/j2meapi/JSR_184_Mobile_3D_Graphics_API_1_1/index.html
+			float x,y,z;
+			float r[] = new float[6];
+			rayIntersection.getRay(r);
+			x=r[0]+r[3]*(rayIntersection.getDistance()-0.05f);			
+			y=r[1]+r[4]*rayIntersection.getDistance()+2;
+			z=r[2]+r[5]*(rayIntersection.getDistance()-0.05f);
+			TPoint p = new TPoint((int)x,(int)y,(int)z);			
+			myLevel.explodeAnim(p);
                         //Do the explosion sprite
-                        Group explosionGroup = new Group();
-                        Sprite3D explosion = (Sprite3D)myLevel.explosionSprite.duplicate();
+                        //Group explosionGroup = new Group();
+                        //Sprite3D explosion = (Sprite3D)myLevel.explosionSprite.duplicate();
 								//explosion.setCrop(0,0,100,100);                                                
                         
                         
-                        explosionGroup.addChild(explosion);
-                        myLevel.myWorld.addChild(explosionGroup);
-                        float trans[] = new float[3];
-                        myTankControl.getTankGroup().getTranslation(trans);
-                        explosionGroup.setTranslation(trans[0], trans[1]+2, trans[2]);
-                        float orient[] = new float[4];
-                        myTankControl.getTankGroup().getOrientation(orient);
-                        explosionGroup.preRotate(orient[0], orient[1], orient[2], orient[3]);
-                        explosion.translate(0, 0, rayIntersection.getDistance()*10-2); // No idea why you need*10-1
+                        //explosionGroup.addChild(explosion);
+                        //myLevel.myWorld.addChild(explosionGroup);
+                        //float trans[] = new float[3];
+                        //myTankControl.getTankGroup().getTranslation(trans);
+                        //explosionGroup.setTranslation(trans[0], trans[1]+2, trans[2]);
+                        //myLevel.explodeAnim(new TPoint(1,2,1));
+                        //myLevel.explodeAnim(new TPoint((int)trans[0],(int)trans[1]+2,(int)trans[2]));
+                        //float orient[] = new float[4];
+                        //myTankControl.getTankGroup().getOrientation(orient);
+                        
+                        
+                        //explosionGroup.preRotate(orient[0], orient[1], orient[2], orient[3]);
+                        //explosion.translate(0, 0, rayIntersection.getDistance()*10-2); // No idea why you need*10-1
 								
-								TGameExplosionThread animThread = new TGameExplosionThread(explosion,explosionGroup,myLevel.myWorld);
-								animThread.start();	                        
+								//TGameExplosionThread animThread = new TGameExplosionThread(explosion,explosionGroup,myLevel.myWorld);
+								//animThread.start();	                        
+                        
                         //if it wasn't the ground that was hit, then the game engine needs to know
                         if(!objectIntersected.getParent().equals(myLevel.groundGroup)){           
                                     //objectIntersected.postRotate(45,0,1,0);

@@ -24,6 +24,9 @@ public class TGameTimerTask extends TimerTask{
 	public void run(){
 		//int t = 1; //iincrement in time;
 		//System.out.println("Running............");
+		//System.out.println("TGameTimertask time:"+Time);		
+		Time=System.currentTimeMillis();		
+		
 		TGameLogic.advanceLogic(Time);
 		myLevel.advance(Time);		
 		GameCanvas.repaint();
