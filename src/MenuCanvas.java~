@@ -24,7 +24,7 @@ public class MenuCanvas extends Canvas{
 	}
 	
 	public void keyPressed(int keyCode){
-		if(state==SHOW_LOGO)myParent.startGame(level);	
+		myParent.startGame(level);	
 	}
 
 //Stolen from:http://developers.sun.com/mobility/reference/techart/design_guidelines/image_resizing.html

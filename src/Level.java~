@@ -19,9 +19,13 @@ public class Level{
 	Camera camera;	
 	Group playersGroup;
 	Object3D playersObject;
+	TModelDescriptor playerDescriptor;
 	
+	//Sprite3D dotSprite;
+	Group dotGroup;	
 	Sprite3D explosionSprite; 
 	TSprite explosion;
+	
 	
 	Group groundGroup;
 		
@@ -37,6 +41,8 @@ public class Level{
 	int lastTarget=0;	
 	
 	TGameAI myAI;
+	TPhysics myPhysics;	
+	
 	
 	Level(World w){
 		trucks = new Hashtable();	
@@ -54,6 +60,16 @@ public class Level{
 			init_world();
 		}catch(Exception e){e.printStackTrace();}
 		animationControl = new TAnimationControl(myWorld);
+		
+		playerDescriptor=new TModelDescriptor(playersGroup,2,3f,10f);
+		
+		/*
+		playerDescriptor.A.addChild((Group)dotGroup.duplicate());
+		playerDescriptor.B.addChild((Group)dotGroup.duplicate());
+		playerDescriptor.C.addChild((Group)dotGroup.duplicate());
+		playerDescriptor.D.addChild((Group)dotGroup.duplicate());		
+		*/
+		myPhysics = new TPhysics(this);	
 	}
 	public void init_world() throws IOException{
 		playersGroup = new Group();
@@ -74,14 +90,7 @@ public class Level{
             myWorld.setActiveCamera(camera);
             myWorld.addChild((Node)playersGroup);     
             
-            
-/*            
-            Image2D explode = new Image2D(Image2D.RGBA,Image.createImage("/explosion2.gif")); 
-            CompositingMode comp = new CompositingMode();comp.setBlending(CompositingMode.ALPHA);
-            Appearance appr = new Appearance();appr.setCompositingMode(comp);
-				Sprite3D sprt = new Sprite3D(true,explode,appr);
-*/				            
-            
+                       
             //explosion = new Sprite3D(true,explode,appr);
 		/*	VERY TEMPORARY!!!!!
 		*/		
@@ -99,6 +108,12 @@ public class Level{
             explosionSprite = new Sprite3D(true,explosionImg2D,app);
             explosionSprite.setTranslation(0, 0, 0);            
             
+            //Red dot, for testing purposes
+            Image dot_img = Image.createImage("/dot.gif");
+				Image2D dot2D = new Image2D(Image2D.RGBA,dot_img);
+				Sprite3D dotSprite = new Sprite3D(true,dot2D,app);
+				dotGroup = new Group();
+				dotGroup.addChild(dotSprite);
             /*
 				Fog f = new Fog();
 				f.setColor(0xFF0000);
@@ -209,8 +224,9 @@ public class Level{
 		score+=t.value;	
 		myWorld.removeChild(t.group);		
 		myAI.informDestroyed(t);
+				t.targetDestroyed();
 		Sprite3D s = (Sprite3D)explosionSprite.duplicate();
-		s.scale(10,10,10);
+		s.scale(30,30,30);
 		float f[] = new float[4];
 		t.group.getTranslation(f);
 		TPoint p = new TPoint(f[0],f[1],f[2]);
@@ -237,8 +253,10 @@ public class Level{
 	}
 	
 	public void advance(long Time){
+		myPhysics.advance(Time);
 		myAI.advance(Time);
 		animationControl.advance(Time);
+
 	}
 	
 }

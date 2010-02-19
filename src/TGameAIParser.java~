@@ -48,7 +48,10 @@ public class TGameAIParser{
 		}
 	}
 	public void parse_targetDestination(String s){
-			
+		if(TParser.sub(s,',',0).equals("random_destination")){
+			System.out.println("random destination");
+			myAI.setTargetDestination(myAI.RANDOM_DESTINATION);		
+		}			
 	}
 	
 

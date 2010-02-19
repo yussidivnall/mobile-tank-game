@@ -43,7 +43,8 @@ public class TGame2 extends MIDlet   {
 
 	public void startApp(){
 		System.out.println("startApp");
-		startGame("level.txt");		
+		myDisplay.setCurrent(menuCanvas);		
+		//startGame("level.txt");		
       System.out.println("startApp end");
 	}
 	public void startMenu(){

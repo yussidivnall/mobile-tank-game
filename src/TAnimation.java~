@@ -5,6 +5,6 @@ public class TAnimation{
 	TAnimation(){
 		group = new Group();	
 	}
-	public void advance(float time){
+	public void advance(long time){
 	}
 }

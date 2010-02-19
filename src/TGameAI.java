@@ -63,6 +63,10 @@ public class TGameAI{
 		}
 		for(Enumeration e=myLevel.targets.elements();e.hasMoreElements();){
 			TTarget t = (TTarget)e.nextElement();
+			if(t.destroy){
+				myLevel.myWorld.removeChild(t.group);
+				myLevel.targets.remove(t);	
+			}
 			if(t.unloading && rule_set==STOP_THAT_TRUCK){
 				
 			}

@@ -9,18 +9,15 @@ public class GameLogic{
 	float NORMALS_ACCURACY=0.5f;
 	Level myLevel;
    
-	public GameLogic(TankControl tankRef,Level level,TCamera cam){
-		
+	public GameLogic(TankControl tankRef,Level level,TCamera cam){	
 		myLevel = level;
 		System.out.println("GameLogic Construction");
 		Ground=myLevel.groundGroup;
 		myTankControl = tankRef;
 		GameCamera = cam;
 	};
-	
-		public void CollisionDetection(){
-		}	
-	
+		//Gravity, should be in TPhysics!
+		//could be done a lot better!
 		public void GroundInteraction(){
 			float position[] = myTankControl.getTankPosition();
 			float orientation[] = {0,-1,0}; // look down
@@ -52,10 +49,9 @@ public class GameLogic{
 			rayIntersection=null;
 			
 		}
-		/*
-		*	Checks that level boundaries aren't exceeded
-		*/	
 		
+	//Checks that level boundaries aren't exceeded
+	//Should probably be in TPhysics!
 	public void GroundBorders(){
 			float tankX = myTankControl.getTankPosition()[0];
 			float tankZ = myTankControl.getTankPosition()[2];
@@ -96,64 +92,34 @@ public class GameLogic{
 			z=r[2]+r[5]*(rayIntersection.getDistance()-0.5f);
 			TPoint p = new TPoint((int)x,(int)y,(int)z);			
 			myLevel.explodeAnim(p);
-                        //Do the explosion sprite
-                        //Group explosionGroup = new Group();
-                        //Sprite3D explosion = (Sprite3D)myLevel.explosionSprite.duplicate();
-								//explosion.setCrop(0,0,100,100);                                                
-                        
-                        
-                        //explosionGroup.addChild(explosion);
-                        //myLevel.myWorld.addChild(explosionGroup);
-                        //float trans[] = new float[3];
-                        //myTankControl.getTankGroup().getTranslation(trans);
-                        //explosionGroup.setTranslation(trans[0], trans[1]+2, trans[2]);
-                        //myLevel.explodeAnim(new TPoint(1,2,1));
-                        //myLevel.explodeAnim(new TPoint((int)trans[0],(int)trans[1]+2,(int)trans[2]));
-                        //float orient[] = new float[4];
-                        //myTankControl.getTankGroup().getOrientation(orient);
-                        
-                        
-                        //explosionGroup.preRotate(orient[0], orient[1], orient[2], orient[3]);
-                        //explosion.translate(0, 0, rayIntersection.getDistance()*10-2); // No idea why you need*10-1
-								
-								//TGameExplosionThread animThread = new TGameExplosionThread(explosion,explosionGroup,myLevel.myWorld);
-								//animThread.start();	                        
-                        
-                        //if it wasn't the ground that was hit, then the game engine needs to know
-                        if(!objectIntersected.getParent().equals(myLevel.groundGroup)){           
-                                    //objectIntersected.postRotate(45,0,1,0);
-                                    myLevel.SomethingShot(objectIntersected);
-                        }					
+         //if it wasn't the ground that was hit, then the game engine needs to know
+         if(!objectIntersected.getParent().equals(myLevel.groundGroup)){
+         	myLevel.SomethingShot(objectIntersected);
+      	}					
 			System.out.println("Picked : " + objectIntersected);
 			System.out.println("Distance : "+rayIntersection.getDistance());
 			
 		}else{
 			System.out.println("Nothing Picked");
 		}
-		
-		float tankPosition[] = myTankControl.getTankPosition();
-		
-		//TGameUtilities.Ray(
 		rayIntersection = null;
 		
 	}
 	
-        public void cameraControl(){
-            if(myTankControl.Accelerating){
-                GameCamera.accelerate(myTankControl.Speed);
-            }else{
-                GameCamera.decelerate(myTankControl.Speed);
-            }
-        }
+   public void cameraControl(){
+		if(myTankControl.Accelerating){
+      	GameCamera.accelerate(myTankControl.Speed);
+		}else{
+			GameCamera.decelerate(myTankControl.Speed);
+		}
+	}
         
         
 	public void advanceLogic(float time){
 		tankLogic(time);
-                
 		if (myTankControl.moving){// needs to update the positioning
 			GroundBorders();			
 			GroundInteraction();
-			CollisionDetection();
          cameraControl();
 		}
 	}
@@ -165,17 +131,14 @@ public class GameLogic{
 	public void tankLogic(float time){
 		if (myTankControl.Speed > myTankControl.MAX_SPEED){ //MAX SPEED
 			myTankControl.Speed=myTankControl.MAX_SPEED;
-			//System.out.println("MAX_SPEED");
 		}
 		else if(myTankControl.Speed < -(myTankControl.MAX_SPEED) ){//MIN SPEED (Reversing at max Speed)
 			myTankControl.Speed=-(myTankControl.MAX_SPEED);
 		}
 		else if(myTankControl.Accelerating){ //ACCELERATING
 			if(myTankControl.forwards){
-				//System.out.println("ACCELERATION_RATE :"+myTankControl.ACCELERATION_RATE);
 				myTankControl.Speed-=myTankControl.ACCELERATION_RATE;
 			}else{
-				//System.out.println("ACCELERATION_RATE :"+myTankControl.ACCELERATION_RATE);
 				myTankControl.Speed+=myTankControl.ACCELERATION_RATE;
 			}
 		}
@@ -194,23 +157,15 @@ public class GameLogic{
 		};
 		
 		if (myTankControl.moving) { // moving
-			//System.out.println("moving.......................");
-			//System.out.println("MyTankControl.speed:"+myTankControl.Speed);
 			myTankControl.advanceTank(myTankControl.Speed);
-			//GroundInteraction();
-		}else {
-			//System.out.println(".......................Stoped"); 
 		}
 		
 		if (myTankControl.turning){ // turning
 			if(myTankControl.direction==true){
 				myTankControl.rotateTank(myTankControl.ROTATION_ANGLE);
-				//System.out.println("Direction "+myTankControl.direction);
 			}else {
 				myTankControl.rotateTank(-(myTankControl.ROTATION_ANGLE));
-			}
-			
+			}	
 		}
 	}
 }
-

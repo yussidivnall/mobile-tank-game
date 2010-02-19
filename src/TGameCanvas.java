@@ -63,8 +63,7 @@ public class TGameCanvas extends Canvas {
 			}
 			
 		}
-		public void terminate(){	}
-		
+		public void terminate(){}		
 }
 	
 

@@ -7,7 +7,7 @@ public class TTarget{
 	
 	boolean moving=true;	
 	boolean unloading = false;	
-	
+	boolean destroy = false;
 	float min_speed=0.1f;
 	float max_speed=3.0f;
 	float speed=0.5f; // default speed	
@@ -47,7 +47,9 @@ public class TTarget{
 		moving=false;
 		unloading=true;
 	}
-	
+	public void targetDestroyed(){
+		destroy=true;	
+	}
 	
 	
 //--------------

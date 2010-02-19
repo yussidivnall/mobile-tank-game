@@ -54,6 +54,19 @@ public class TankControl{
 		localTankGroup.setTranslation(getTankPosition()[0],getTankPosition()[1],z);	
 	}	
 	
+	public void getTankCorners(TPoint[] p){
+		float w = 2; float h=2.5f ;float l = 3; //width,height,length		
+		float pos[] = getTankPosition();
+		float ori[] = getTankOrientation();
+		TPoint A= new TPoint(pos[0],h,pos[2]);
+		TPoint B= new TPoint(pos[0],h,pos[2]);
+		TPoint C= new TPoint(pos[0],h,pos[2]);
+		TPoint D= new TPoint(pos[0],h,pos[2]);
+				
+		//A.X=A.X+(float)Math.sin(rotationY);
+		p[0]=A;p[1]=B;p[2]=C;p[3]=D;
+	}	
+	
 	public float[] getTankPosition(){
 		float Translation[] = new float[3];
 		localTankGroup.getTranslation(Translation);
@@ -74,7 +87,7 @@ public class TankControl{
 		ret[1]= rotationY/180;
 		ret[2]=rotationZ/180;
 		
-		System.out.println("Computed angles : X : "+ ret[0] + " Y " + ret[1] +" Z : "+ ret[2]);
+		//System.out.println("Computed angles : X : "+ ret[0] + " Y " + ret[1] +" Z : "+ ret[2]);
 		return ret;
 	}
 	
@@ -114,7 +127,7 @@ public class TankControl{
 		ret[2] = Orientation[0] * Orientation[3];
 		System.out.println("Computed angles : X : "+ ret[0] + " Y " + ret[1] +" Z : "+ ret[2]);
 		*/
-		//Needs to calculate the vactor ( the translation on X and Z in relation to rotation Y)
+		//Needs to calculate the vector ( the translation on X and Z in relation to rotation Y)
 		//Sin=opp/hyp =~ sin*hyp = opp, make hyp 10
 		float  turnAngle = (rotationY*3.14159f)/180;
 		float TranslationX = (float)Math.sin(turnAngle) * (float)RANGE;

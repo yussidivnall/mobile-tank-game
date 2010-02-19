@@ -60,7 +60,8 @@ public class LevelParser{
 	}
 	
 	public void parse_boundaries(String s){
-		float a[]=TParser.vec(s);	
+		float a[]=TParser.vec(s);
+		myLevel.setBoundaries(a[0],a[1],a[2],a[3]);	
 	}	
 	
 	public void parse_AI(String s){

@@ -1,4 +1,4 @@
--libraryjars D:\WTK23\lib\wma11.jar;D:\WTK23\lib\mmapi.jar;D:\WTK23\lib\jsr184.jar;D:\WTK23\lib\midpapi20.jar;D:\WTK23\lib\cldcapi11.jar
--injars D:\WTK23\apps\TGame2\bin\TGame2.jar
--outjar C:\DOCUME~1\Osama\LOCALS~1\Temp\TGame2.jar
+-libraryjars /opt/WTK2.5.2/lib/jsr184.jar:/opt/WTK2.5.2/lib/midpapi20.jar:/opt/WTK2.5.2/lib/cldcapi11.jar
+-injars /home/volcan/j2mewtk/2.5.2/apps/TGame2/bin/TGame2.jar
+-outjar /tmp/TGame2.jar
 -keep public class * extends javax.microedition.midlet.MIDlet 

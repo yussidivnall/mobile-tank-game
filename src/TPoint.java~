@@ -1,6 +1,6 @@
 public class TPoint{
-int X,Y,Z;
-	TPoint(int x,int y,int z){
+float X,Y,Z;
+	TPoint(float x,float y,float z){
 		X=x;
 		Y=y;
 		Z=z;	

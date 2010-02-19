@@ -27,6 +27,7 @@ public class TSprite extends TAnimation{
 		num_frames=width/frame_width;
 		sprite.setCrop(0,0,100,100);
 		g.addChild(sprite);
+		group.setTranslation(0,0,0);
 		group.addChild(g);
 	}
 	
