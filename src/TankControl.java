@@ -32,7 +32,12 @@ public class TankControl{
             return localTankGroup;
         }
         
-        
+   public void crash(int type){
+		if(type==1){ // Head On Crash
+			Speed=-(Speed);
+			System.out.println("Crashed ");
+		}   
+   }
 	public void FullStop(){
 			moving=false;
 			Accelerating=false;

@@ -53,6 +53,7 @@ public class TGame2 extends MIDlet   {
 	public void startGame(String level_file){
 			myLevel.load(level_file);
 			myTankControl = new TankControl(myLevel.playersGroup);
+			myLevel.setTankControl(myTankControl);
          TCamera GameCamera = new TCamera(myLevel.camera);
          myGameLogic = new GameLogic(myTankControl,myLevel,GameCamera);
 			myTimerTask = new TGameTimerTask(myLevel,myGameLogic,gameCanvas,1000/FRAMES_PER_SECOND);

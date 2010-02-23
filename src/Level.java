@@ -35,15 +35,14 @@ public class Level{
 	Hashtable sources; // stores TBuilding
 	Hashtable destinations;	// stores TBuilding
 	Hashtable idles; // stores TIdleSprite3D - objects that do nothing, trees... (Doesn't have to be sprites); 	
-	
+
 	
 	Hashtable targets; // stores TTarget
 	int lastTarget=0;	
 	
+	TankControl myTankControl;
 	TGameAI myAI;
-	TPhysics myPhysics;	
-	
-	
+	TPhysics myPhysics;
 	Level(World w){
 		trucks = new Hashtable();	
 		sources=new Hashtable(); // index,TBuilding
@@ -205,7 +204,9 @@ public class Level{
 		targets.put(new Integer(lastTarget),target);
 		lastTarget++;	
 	}	
-	
+	public void setTankControl(TankControl tc){
+		myTankControl = tc;	
+	}
 	
 	public void SomethingShot(Node n){
 		for (Enumeration e=targets.elements();e.hasMoreElements();){
@@ -256,7 +257,6 @@ public class Level{
 		myPhysics.advance(Time);
 		myAI.advance(Time);
 		animationControl.advance(Time);
-
 	}
 	
 }

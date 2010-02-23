@@ -11,7 +11,7 @@ public class TPhysics{
 			testA.setPickingEnable(false);
 			testB=(Group)myLevel.dotGroup.duplicate();
 			testB.setPickingEnable(false);
-			myLevel.myWorld.addChild(testA);myLevel.myWorld.addChild(testB);
+			//myLevel.myWorld.addChild(testA);myLevel.myWorld.addChild(testB);
 	}
 	public void advance(long time){
 		//wheelsCollision();	
@@ -40,7 +40,10 @@ public class TPhysics{
 		//if(myLevel.myWorld.pick(-1,playerX,testHeight,playerZ,testX,testHeight,testZ,headOn)){
 			//System.out.println("Something up ahead!");
 			if(headOn.getDistance() < testDistance){
+				System.out.println("Headon Crash");
+				myLevel.myTankControl.crash(1);
 				//for testing!
+				/*				
 				float r[] = new float[6];
 				headOn.getRay(r);
 				float x=r[0]+r[3]*(headOn.getDistance());
@@ -52,7 +55,8 @@ public class TPhysics{
 				testA.setTranslation(r[0],r[1],r[2]);
 				testB.setTranslation(r[3],r[4],r[5]);
 				//myLevel.myWorld.removeChild(headOn.getIntersected().getParent());
-				//testB.setTranslation(x,y,z);
+				//testB.setTranslation(x,y,z)
+				*/
 			}
 		}		
 		//System.out.println("Player at X:"+playerX+" Z:"+playerZ+" at angle:"+playerAngle);		
