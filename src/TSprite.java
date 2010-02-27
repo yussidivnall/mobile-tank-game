@@ -1,4 +1,5 @@
 import javax.microedition.m3g.*;
+//Describes a sprite that isn't idle (Animated)
 public class TSprite extends TAnimation{
 	Sprite3D sprite;
 	int frame_width;

@@ -1,4 +1,6 @@
 import javax.microedition.m3g.*;
+//Describes game's models
+
 public class TModelDescriptor{
 	Group myGroup;
 	Group A,B,C,D; // corners from top	
@@ -14,5 +16,8 @@ public class TModelDescriptor{
 		B.translate(-w/2,h,l/2);
 		C.translate(w/2,h,-l/2);
 		D.translate(-w/2,h,-l/2);
+	}
+	public float getLength(){
+		return length;	
 	}
 }

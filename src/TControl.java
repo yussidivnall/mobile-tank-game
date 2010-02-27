@@ -1,6 +1,7 @@
 public class TControl{
 	//float speed = 0.5f;
-
+	//Control the targets (trucks) would in the futre be used to extend TankControl too
+	// And save a few lines of code
 	float rotationY=0;
 	TTarget myTarget;	
 	

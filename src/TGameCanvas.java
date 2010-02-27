@@ -3,17 +3,17 @@ import javax.microedition.lcdui.*;
 import java.util.TimerTask;
 import java.util.Timer;
 public class TGameCanvas extends Canvas {
-	TGame2 myTestlet;
+		TGame2 myMidlet;
 
 	
 		public TGameCanvas(TGame2 Testlet){
-			myTestlet = Testlet;
+			myMidlet = Testlet;
 		}
 	
 	
 		// Canvas abstract override
 		public void paint(Graphics g){
-			myTestlet.paint(g);
+			myMidlet.paint(g);
 		}
 
 		public void keyPressed(int keyCode){
@@ -21,21 +21,21 @@ public class TGameCanvas extends Canvas {
 			//System.out.println("======================KeyPresed=================");			
 			switch (getGameAction(keyCode)){
 				case UP:
-					myTestlet.SpeedUp(true);
+					myMidlet.SpeedUp(true);
 				break;
 				
 				case DOWN:
-					myTestlet.SpeedUp(false);
+					myMidlet.SpeedUp(false);
 				break;
 				
 				case LEFT:	
-					myTestlet.Turn(true);
+					myMidlet.Turn(true);
 				break;
 				case RIGHT:	
-					myTestlet.Turn(false);
+					myMidlet.Turn(false);
 				break;
 				case FIRE:
-					myTestlet.Fire();
+					myMidlet.Fire();
 				break;
 			}
 			
@@ -48,17 +48,17 @@ public class TGameCanvas extends Canvas {
 			
 			switch (getGameAction(keyCode)){
 				case UP:
-					myTestlet.SlowDown();
+					myMidlet.SlowDown();
 				break;
 				case DOWN:
-					myTestlet.SlowDown();
+					myMidlet.SlowDown();
 				break;
 								
 				case LEFT:	
-					myTestlet.Strighten();
+					myMidlet.Strighten();
 				break;
 				case RIGHT:	
-					myTestlet.Strighten();
+					myMidlet.Strighten();
 				break;
 			}
 			

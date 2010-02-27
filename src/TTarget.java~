@@ -1,4 +1,5 @@
 import javax.microedition.m3g.*;
+//Describes a truck target
 public class TTarget{
 	Group group;
 	TPoint source;

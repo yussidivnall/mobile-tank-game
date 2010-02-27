@@ -1,5 +1,5 @@
 public class TMath{
-
+//Some common maths things
 	public static float angle(float rise,float run){
 			System.out.println("rise:"+rise+" run:"+run);			
 			float ret = 0;

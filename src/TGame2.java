@@ -12,6 +12,7 @@ import java.util.TimerTask;
 import java.util.*;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.*;
+
 public class TGame2 extends MIDlet   {
 
    long start,elapsed,time =0;
@@ -61,12 +62,7 @@ public class TGame2 extends MIDlet   {
 			myTimer.schedule(myTimerTask,0,1000/FRAMES_PER_SECOND);
 	}	
 	
-	
-	
-	public void printSysData(){
-		System.out.println("SystemData....");
-		System.out.println(System.getProperty("javax.microedition.m3g.version"));
-	}
+
 	/* CommandListener abstract methods override
 	*/
 	public void commandAction(Command c,Displayable d){};
@@ -124,12 +120,5 @@ public class TGame2 extends MIDlet   {
 	
 	
 	
-	public void DisplayGroupsChildren(Group group)
-	{
-		int NumberOfChildren = group.getChildCount();
-		for (int i = 0;i < NumberOfChildren;i++){
-			String ObjName = ""+group.getChild(i);
-			System.out.println("Child number: "+i+" is named: "+ObjName);
-		}
-	}
+
 }

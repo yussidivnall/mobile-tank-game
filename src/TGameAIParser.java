@@ -1,4 +1,5 @@
 import java.io.*;
+//Loads the AI Configuration
 
 public class TGameAIParser{
 	final String AI_RULES="ai_rules:";

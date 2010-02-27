@@ -12,6 +12,7 @@ import java.util.TimerTask;
 import java.util.*;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.*;
+
 public class TGame2 extends MIDlet   {
 
    long start,elapsed,time =0;
@@ -53,6 +54,7 @@ public class TGame2 extends MIDlet   {
 	public void startGame(String level_file){
 			myLevel.load(level_file);
 			myTankControl = new TankControl(myLevel.playersGroup);
+			myLevel.setTankControl(myTankControl);
          TCamera GameCamera = new TCamera(myLevel.camera);
          myGameLogic = new GameLogic(myTankControl,myLevel,GameCamera);
 			myTimerTask = new TGameTimerTask(myLevel,myGameLogic,gameCanvas,1000/FRAMES_PER_SECOND);
@@ -60,12 +62,7 @@ public class TGame2 extends MIDlet   {
 			myTimer.schedule(myTimerTask,0,1000/FRAMES_PER_SECOND);
 	}	
 	
-	
-	
-	public void printSysData(){
-		System.out.println("SystemData....");
-		System.out.println(System.getProperty("javax.microedition.m3g.version"));
-	}
+
 	/* CommandListener abstract methods override
 	*/
 	public void commandAction(Command c,Displayable d){};

@@ -1,5 +1,5 @@
 public class TMath{
-
+//Some common maths things
 	public static float angle(float rise,float run){
 			System.out.println("rise:"+rise+" run:"+run);			
 			float ret = 0;
@@ -22,7 +22,7 @@ public class TMath{
 			// atan(t) = t - t^3/3+t^5/5-t^7/7+t^9/9 * 180/pi > thanks MathForum - ask doctor math 
 			// http://mathforum.org/library/drmath/view/51875.html
 			//Broken!!!			
-						
+			//Maybe take a larger degree or accuracy! and use lookup table where possible			
 			float r = 0;
 			float atan=0;			
 			if (ratio > -1 && ratio < 1){

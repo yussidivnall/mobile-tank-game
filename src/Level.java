@@ -60,7 +60,7 @@ public class Level{
 		}catch(Exception e){e.printStackTrace();}
 		animationControl = new TAnimationControl(myWorld);
 		
-		playerDescriptor=new TModelDescriptor(playersGroup,2,3f,10f);
+		playerDescriptor=new TModelDescriptor(playersGroup,2,3f,5f);
 		
 		/*
 		playerDescriptor.A.addChild((Group)dotGroup.duplicate());

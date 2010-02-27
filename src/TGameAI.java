@@ -127,16 +127,7 @@ public class TGameAI{
 		int x=(int)position[0];
 		int z=(int)position[2];
 
-/*
-		System.out.println("destination X "+target.destination.X + " Z: "+target.destination.Z);		
-		System.out.println("rangeX >"+(target.destination.X-distance_error) + " and X < "+(target.destination.X+distance_error));
-		System.out.println("rangeZ >"+(target.destination.Z-distance_error) + " and Z < "+(target.destination.Z+distance_error));
-		System.out.println("x:"+x+" z:"+z);
-*/
-		//if(x==target.destination.X && z==target.destination.Z)return true;		
-
 		if(x > target.destination.X-distance_error && x < target.destination.X+distance_error && z > target.destination.Z-distance_error && z < target.destination.Z+distance_error)return true;
-		//if(z > target.destination.Z - distance_error && z < target.destination.Z+distance_error)return true;		
 		return false;
 	}
 	public void informShot(TTarget t){}

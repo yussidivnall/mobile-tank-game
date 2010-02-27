@@ -1,4 +1,5 @@
 import java.io.*;
+//Used to help with level config file parsing
 public class TParser{
 	public static String readLine(InputStream is){
 		try{

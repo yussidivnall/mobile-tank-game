@@ -1,4 +1,6 @@
 public class TPoint{
+//Just a point!
+
 float X,Y,Z;
 	TPoint(float x,float y,float z){
 		X=x;

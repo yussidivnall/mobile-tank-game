@@ -9,6 +9,8 @@
  *
  * @author uri
  */
+ //Controls camera movement
+ 
 import javax.microedition.m3g.*;
 public class TCamera{
     Camera myCamera;
@@ -30,11 +32,12 @@ public class TCamera{
     
     
     public void accelerate(float speed){
-        if(speed > -2){
-            myCamera.postRotate(0.5f, 1, 0, 0);
-            myCamera.translate(0, 0, speed*2);
+        //if(speed > -2){
+            myCamera.preRotate(1f, 1, 0f, 0f);
+				myCamera.setTranslation(0,0,speed+3);            
+            //myCamera.translate(0, 0, speed*3);
             distance--; 
-        }    
+        //}    
     }
     public void decelerate(float speed){
         //if (distance < 0)
