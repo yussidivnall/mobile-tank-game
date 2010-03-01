@@ -1,6 +1,0 @@
-public class TGameExplosionThread extends Runnable{
-	TGameExplosionThread(){}
-	public void run();
-	
-
-}
